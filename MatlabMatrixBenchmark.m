@@ -15,6 +15,9 @@ function [ mRunTime ] = MatlabMatrixBenchmark(  )
 OPERATION_MODE_PARTIAL  = 1; %<! For Testing (Runs Fast)
 OPERATION_MODE_FULL     = 2;
 
+% Disable multithreading
+maxNumCompThreads(1)
+
 cRunTimeFunctions = {@MatrixGenerationRunTime, @MatrixAdditionRunTime, @MatrixMultiplicationRunTime, ...
     @MatrixReductionsRunTime, @ElementWiseOperationsRunTime, @SvdRunTime, @EigRunTime, @MatInvRunTime, ...
     @LinearSystemRunTime, @LeastSquaresRunTime, @CholDecRunTime, @CalcDistanceMatrixRunTime};
