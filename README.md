@@ -7,12 +7,13 @@ Better yet if it would assist Julia / MATLAB Developers to extract even better p
 
 ## Results
 This sections displays the results of the sub tests of the benchmark.
+Each sub test is being executed several times and the median of run times is taken.
 
 ### Matrix Generation
 
-Generation of a Square Matrix using the `randn()` function.
- * MATLAB Code - `mA = randn(matrixSize, matrixSize)`.
- * Julia Code - `mA = randn(matrixSize, matrixSize)`. 
+Generation of a Square Matrix using the `randn()` function and `rand()`.
+ * MATLAB Code - `mA = randn(matrixSize, matrixSize)`, `mB = randn(matrixSize, matrixSize)`.
+ * Julia Code - `mA = randn(matrixSize, matrixSize)`, `mB = randn(matrixSize, matrixSize)`.
 
 ![Matrix Generation][01]
 
@@ -32,24 +33,50 @@ Multiplication of 2 square matrices after a scalar is added to each.
 
 ![Matrix Multiplication][03]
 
+### Matrix Quadratic Form
+
+Calculation of Matrix / Vector Quadratic Form.  
+ * MATLAB Code - `mA = (scalarA + mX) * (scalarB + mY)`.
+ * Julia Code - `mA = (vX.' * mA * vX) .+ (vB.' * vX) .+ sacalrC;` (Using the dot for [Loop Fusion][20]).
+
+![Matrix Quadratic Form][04]
+
 ### Matrix Reductions
 
 Set of operations which reduce the matrix dimension (Works along one dimension).  
 The operation is done on 2 different matrices on along different dimensions.  
 The result is summed with broadcasting to generate a new matrix.
 
- * MATLAB Code - `mA = sum(mX, 1) + min(mY, [], 2)`.
+ * MATLAB Code - `mA = (vX.' * mA * vX) + (vB.' * vX) + sacalrC;`.
  * Julia Code - `mA = sum(mX, 1) .+ minimum(mY, 2)` (Using the dot for [Loop Fusion][20]).
 
-![Matrix Reductions][04]
+![Matrix Reductions][05]
+
+### Matrix Exponent
+
+Calculation of Matrix Exponent.
+
+ * MATLAB Code - `mA = expm(mX);`.
+ * Julia Code - `mA = expm(mX);`.
+
+![Matrix Exponent][06]
+
+### Matrix Square Root
+
+Calculation of Matrix Square Root.
+
+ * MATLAB Code - `mA = sqrtm(mX);`.
+ * Julia Code - `mA = sqrtm(mX);`.
+
+![Matrix Square Root][07]
  
 ### Element Wise Operations
 Set of operations which are element wise.
 
- * MATLAB Code - `mmA = sqrt(abs(mX)) + sin(mY)` and `mB = exp(-(mA .^ 2))`.
- * Julia Code - `mA = sqrt.(abs.(mX)) .+ sin.(mY)` and `mB = exp.(-(mA .^ 2))` (Using the dot for [Loop Fusion][20]). 
+ * MATLAB Code - `mD = abs(mA) + sin(mB);`, `mE = exp(-(mA .^ 2));` and `mF = (-mB + sqrt((mB .^ 2) - (4 .* mA .* mC))) ./ (2 .* mA);`.
+ * Julia Code - `mD = abs.(mA) .+ sin.(mB);`, `mE = exp.(-(mA .^ 2));` and `mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);` (Using the dot for [Loop Fusion][20]). 
 
-![Element Wise Operations][05]
+![Element Wise Operations][08]
 
 ### SVD
 
@@ -58,7 +85,7 @@ Calculation of all 3 SVD Matrices.
  * MATLAB Code - `[mU, mS, mV] = svd(mX)`.
  * Julia Code - `mU, mS, mV = svd(mX, thin = false)`.
 
-![SVD][06]
+![SVD][09]
 
 ### Eigen Decomposition
 
@@ -67,35 +94,7 @@ Calculation of 2 Eigen Decomposition Matrices.
  * MATLAB Code - `[mD, mV] = eig(mX)`.
  * Julia Code - `mD, mV = eig(mX)`.
 
-![Eigen Decomposition][07]
-
-### Matrix Inversion
-
-Calculation of the Inverse and Pseudo Inverse of a matrix.
-
- * MATLAB Code - `mA = inv(mX)` and `mB = pinv(mY)`.
- * Julia Code - `mA = inv(mX)` and `mB = pinv(mY)`.
-
-![Matrix Inversion][08]
-
-### Linear System Solution
-
-Solving a Vector Linear System and a Matrix Linear System.
-
- * MATLAB Code - `vX = mA \ vB` and `mX = mA \ mB`.
- * Julia Code - `vX = mA \ vB` and `mX = mA \ mB`.
-
-![Linear System Solution][09]
-
-### Linear Least Squares
-
-Solving a Vector Least Squares and a Matrix Least Squares.  
-This is combines Matrix Transpose, Matrix Multiplication (Done at onces), Matrix Inversion (Positive Definite) and Matrix Vector / Matrix Multiplication.
-
- * MATLAB Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
- * Julia Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
-
-![Linear Least Squares][10]
+![Eigen Decomposition][10]
 
 ### Cholesky Decomposition
 
@@ -106,6 +105,34 @@ Calculation of Cholseky Decomposition.
 
 ![Cholseky Decomposition][11]
 
+### Matrix Inversion
+
+Calculation of the Inverse and Pseudo Inverse of a matrix.
+
+ * MATLAB Code - `mA = inv(mX)` and `mB = pinv(mY)`.
+ * Julia Code - `mA = inv(mX)` and `mB = pinv(mY)`.
+
+![Matrix Inversion][12]
+
+### Linear System Solution
+
+Solving a Vector Linear System and a Matrix Linear System.
+
+ * MATLAB Code - `vX = mA \ vB` and `mX = mA \ mB`.
+ * Julia Code - `vX = mA \ vB` and `mX = mA \ mB`.
+
+![Linear System Solution][13]
+
+### Linear Least Squares
+
+Solving a Vector Least Squares and a Matrix Least Squares.  
+This is combines Matrix Transpose, Matrix Multiplication (Done at onces), Matrix Inversion (Positive Definite) and Matrix Vector / Matrix Multiplication.
+
+ * MATLAB Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
+ * Julia Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
+
+![Linear Least Squares][14]
+
 ### Squared Distance Matrix
 
 Calculation of the Squared Distance Matrix between 2 sets of Vectors.  
@@ -113,10 +140,10 @@ Namely, each element in the matrix is the squared distance between 2 vectors.
 This is calculation is needed for instance in the K-Means algorithm.
 It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcasting. 
 
- * MATLAB Code - `mA = sum(mX .^ 2, 1).' - (2 .* mX.' .* mY) + sum(mY .^ 2, 1)`.
- * Julia Code - `mA = sum(mX .^ 2, 1).' .- (2 .* mX.' .* mY) .+ sum(mY .^ 2, 1)` (Using the dot for [Loop Fusion][20]).
+ * MATLAB Code - `mA = sum(mX .^ 2, 1).' - (2 .* mX.' * mY) + sum(mY .^ 2, 1)`.
+ * Julia Code - `mA = sum(mX .^ 2, 1).' .- (2 .* mX.' * mY) .+ sum(mY .^ 2, 1)` (Using the dot for [Loop Fusion][20]).
 
-![Squared Distance Matrix][12]
+![Squared Distance Matrix][15]
 
 
 ## System Configuration
@@ -158,14 +185,13 @@ mRunTime = JuliaMatrixBenchmark();
  * The MATLAB code uses Broadcasting which is a feature added on MATLAB R2016b. Hence the test requires this version or one must adjust the code (Use `bsxfun()`).
  * There is no perfect test and this is far from being one. All it tried to do is measure run time of few common operations done by Signal / Image / Data Processing Algorithm Engineers. If it can assist MATLAB and Julia creators to improve performance and tune their implementation it served it purpose.
 
-## TODO
+## ToDo
  * Check if Julia code is efficient.
  * Add Python (NumPy).
  * Add more tests (Some real world algorithms)
-   * Matrix Square Root (`sqrt()`).
-   * Orthogonal Matching Pursuit.
-   * K-Means.
-   * Reweighted Iterative Least Squares.
+     * Orthogonal Matching Pursuit.
+     * K-Means.
+     * Reweighted Iterative Least Squares.
  * Devectorize Element Wise Operations (Loop Fusion isn't working yet). See <https://discourse.julialang.org/t/benchmark-matlab-julia-for-matrix-operations/2000/7>.
 
  
@@ -181,4 +207,7 @@ mRunTime = JuliaMatrixBenchmark();
   [10]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0010.png
   [11]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0011.png
   [12]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0012.png
+  [13]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0013.png
+  [14]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0014.png
+  [15]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0015.png
   [20]: http://julialang.org/blog/2017/01/moredots
