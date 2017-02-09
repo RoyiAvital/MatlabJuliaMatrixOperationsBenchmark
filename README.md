@@ -122,6 +122,9 @@ It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcas
  * Mother Board - ASRock X99 Killer (BIOS Version P3.20).
  * MATLAB R2016b.
  * Julia Pro 0.5.0.4.
+ * Windows 10 Professional 64 Bit.
+
+At the time of the test no other application is running (Anti Virus is disabled).
 
 ## How to Run
 ### Run the Benchmark - Julia
@@ -154,7 +157,8 @@ mRunTime = JuliaMatrixBenchmark();
 ## TODO
  * Check if Julia code is efficient.
  * Add Python (NumPy).
- * Add more tests.* 
+ * Add more tests.
+ * Devectorize Element Wise Operations (Loop Fusion isn't working yet). See <https://discourse.julialang.org/t/benchmark-matlab-julia-for-matrix-operations/2000/7>.
 
  
   [01]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0001.png
