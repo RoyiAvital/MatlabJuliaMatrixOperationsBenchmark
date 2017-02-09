@@ -7,6 +7,12 @@
 # TODO:
 #   1.  A
 #   Release Notes:
+#   -   1.0.001     09/02/2017  Royi Avital
+#       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+#       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+#       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+#       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+#       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
 #   -   1.0.000     09/02/2017  Royi Avital
 #       *   First release version.
 # ----------------------------------------------------------------------------------------------- #
@@ -16,13 +22,14 @@ function JuliaMatrixBenchmark( )
   OPERATION_MODE_PARTIAL  = 1; # For Testing (Runs Fast)
   OPERATION_MODE_FULL     = 2;
 
-  cRunTimeFunctions = [MatrixGenerationRunTime, MatrixAdditionRunTime, MatrixMultiplicationRunTime, MatrixReductionsRunTime,
-                      ElementWiseOperationsRunTime, SvdRunTime, EigRunTime, MatInvRunTime, LinearSystemRunTime,
-                      LeastSquaresRunTime, CholDecRunTime, CalcDistanceMatrixRunTime];
+  cRunTimeFunctions = [MatrixGenerationRunTime, MatrixAdditionRunTime, MatrixMultiplicationRunTime,
+    MatrixQuadraticFormRunTime, MatrixReductionsRunTime, MatrixExpRunTime, MatrixSqrtRunTime, ElementWiseOperationsRunTime,
+    SvdRunTime, EigRunTime, CholDecRunTime, MatInvRunTime,
+    LinearSystemRunTime, LeastSquaresRunTime, CalcDistanceMatrixRunTime];
 
-  cFunctionString = ["Matrix Generation", "Matrix Addition", "Matrix Multiplication", "Matrix Reductions",
-                  "Element Wise Operations", "SVD", "Eigen Decomposition", "Matrix Inversion",
-                  "Linear System Solution", "Linear Least Squares", "Cholesky Decomposition", "Distance Matrix"]
+  cFunctionString = ["Matrix Generation", "Matrix Addition", "Matrix Multiplication", "Matrix Quadratic Form", "Matrix Reductions",
+                  "Matrix Exponential", "Matrix Squared Root", "Element Wise Operations", "SVD", "Eigen Decomposition",
+                  "Cholesky Decomposition", "Matrix Inversion", "Linear System Solution", "Linear Least Squares", "Squared Distance Matrix"]
 
   operationMode = OPERATION_MODE_FULL;
 
@@ -64,7 +71,10 @@ function MatrixGenerationRunTime( matrixSize )
 
   tic();
   mA = randn(matrixSize, matrixSize);
+  mB = rand(matrixSize, matrixSize);
   runTime = toq();
+
+  mA = mA .+ mB;
 
   return mA, runTime;
 end
@@ -97,6 +107,20 @@ function MatrixMultiplicationRunTime( matrixSize )
   return mA, runTime;
 end
 
+function MatrixQuadraticFormRunTime( matrixSize )
+
+  mA = randn(matrixSize, matrixSize);
+  vX = randn(matrixSize, 1);
+  vB = randn(matrixSize, 1);
+  sacalrC = rand(1);
+
+  tic();
+  mA = (vX.' * mA * vX) .+ (vB.' * vX) .+ sacalrC;
+  runTime = toq();
+
+  return mA, runTime;
+end
+
 function MatrixReductionsRunTime( matrixSize )
 
     mX = randn(matrixSize, matrixSize);
@@ -109,17 +133,42 @@ function MatrixReductionsRunTime( matrixSize )
   return mA, runTime;
 end
 
-function ElementWiseOperationsRunTime( matrixSize )
+function MatrixExpRunTime( matrixSize )
 
     mX = randn(matrixSize, matrixSize);
-    mY = randn(matrixSize, matrixSize);
 
     tic();
-    mA = sqrt.(abs.(mX)) .+ sin.(mY);
-    mB = exp.(-(mA .^ 2));
+    mA = expm(mX);
     runTime = toq();
 
-    mA = mA .+ mB;
+  return mA, runTime;
+end
+
+function MatrixSqrtRunTime( matrixSize )
+
+    mX = randn(matrixSize, matrixSize);
+    mX = mX.' * mX;
+
+    tic();
+    mA = sqrtm(mX);
+    runTime = toq();
+
+  return mA, runTime;
+end
+
+function ElementWiseOperationsRunTime( matrixSize )
+
+  mA = rand(matrixSize, matrixSize);
+  mB = 3 .+ rand(matrixSize, matrixSize);
+  mC = rand(matrixSize, matrixSize);
+
+    tic();
+    mD = abs.(mA) .+ sin.(mB);
+    mE = exp.(-(mA .^ 2));
+    mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);
+    runTime = toq();
+
+    mA = mD .+ mE .+ mF;
 
   return mA, runTime;
 end
@@ -146,6 +195,18 @@ function EigRunTime( matrixSize )
   runTime = toq();
 
   mA = mD .+ mV;
+
+  return mA, runTime;
+end
+
+function CholDecRunTime( matrixSize )
+
+    mX = randn(matrixSize, matrixSize);
+    mX = mX.' * mX;
+
+    tic();
+    mA = chol(mX);
+    runTime = toq();
 
   return mA, runTime;
 end
@@ -198,25 +259,13 @@ function LeastSquaresRunTime( matrixSize )
   return mA, runTime;
 end
 
-function CholDecRunTime( matrixSize )
-
-    mX = randn(matrixSize, matrixSize);
-    mX = mX.' * mX;
-
-    tic();
-    mA = chol(mX);
-    runTime = toq();
-
-  return mA, runTime;
-end
-
 function CalcDistanceMatrixRunTime( matrixSize )
 
     mX = randn(matrixSize, matrixSize);
     mY = randn(matrixSize, matrixSize);
 
     tic();
-    mA = sum(mX .^ 2, 1).' .- (2 .* mX.' .* mY) .+ sum(mY .^ 2, 1);
+    mA = sum(mX .^ 2, 1).' .- (2 .* mX.' * mY) .+ sum(mY .^ 2, 1);
     runTime = toq();
 
   return mA, runTime;

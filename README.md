@@ -1,6 +1,9 @@
 # Matlab & Julia Matrix Operations Benchmark
 
 This is a small benchmark of some common Matrix Operations (Linear Algebra Oriented).  
+The purpose of this Benchmark is to display Run Time of various commonly used operations by Signal / Image / Data Processing Algorithm Engineers. 
+It was born from curiosity to to try Julia and if it will assist any user of Julia / MATLAB it served its purpose.
+Better yet if it would assist Julia / MATLAB Developers to extract even better performance from their product it served its purpose twice.
 
 ## Results
 This sections displays the results of the sub tests of the benchmark.
@@ -149,15 +152,20 @@ mRunTime = JuliaMatrixBenchmark();
  * Images of the performance test will be created and displayed.
 
 ## Remarks
- * I'm not an expert in Julia (Actually was my first time). Hence, if there are way to improve run time, please share. I did took advise from [More Dots: Syntactic Loop Fusion in Julia][20].
- * This is only a small sub set of operations. I will expand it with time. If you have ideas, please share.
+ * I'm not an expert in Julia (Actually this was my first time coding Julia). Hence, if there are ways to improve the run time, please share with me. I did took advise from [More Dots: Syntactic Loop Fusion in Julia][20].
+ * This is only a small sub set of operations. I will expand it with time. If you have ideas for small micro benchmark to be added, please share.
  * For each function the output was set to dependent on the calculation which was timed to prevent JIT optimizations which excludes the calculation (MATLAB infers the calculation has no effect on the output and doesn't run it).
  * The MATLAB code uses Broadcasting which is a feature added on MATLAB R2016b. Hence the test requires this version or one must adjust the code (Use `bsxfun()`).
+ * There is no perfect test and this is far from being one. All it tried to do is measure run time of few common operations done by Signal / Image / Data Processing Algorithm Engineers. If it can assist MATLAB and Julia creators to improve performance and tune their implementation it served it purpose.
 
 ## TODO
  * Check if Julia code is efficient.
  * Add Python (NumPy).
- * Add more tests.
+ * Add more tests (Some real world algorithms)
+   * Matrix Square Root (`sqrt()`).
+   * Orthogonal Matching Pursuit.
+   * K-Means.
+   * Reweighted Iterative Least Squares.
  * Devectorize Element Wise Operations (Loop Fusion isn't working yet). See <https://discourse.julialang.org/t/benchmark-matlab-julia-for-matrix-operations/2000/7>.
 
  
