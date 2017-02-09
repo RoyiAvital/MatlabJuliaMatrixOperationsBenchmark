@@ -22,18 +22,15 @@ cRunTimeFunctions = [MatrixGenerationRunTime, MatrixAdditionRunTime, MatrixMulti
 
 cFunctionString = ["Matrix Generation", "Matrix Addition", "Matrix Multiplication", "Matrix Reductions",
                   "Element Wise Operations", "SVD", "Eigen Decomposition", "Matrix Inversion",
-                  "Linear System Solution", "Linear Least Squares", "Cholesky Decomposition", "Squared Distance Matrix"]
+                  "Linear System Solution", "Linear Least Squares", "Cholesky Decomposition", "Distance Matrix"]
 
 operationMode = OPERATION_MODE_FULL;
 
 if(operationMode == OPERATION_MODE_PARTIAL)
   vMatrixSize = vcat([2, 8, 16, 32, 64], collect(100:100:500));
-  # mDataDimensions = [3 50 25; 3 500 250; 3 5000 2500; 30 50 25; 30 500 250; 30 5000 2500];
   numIterations = 1;
 elseif(operationMode == OPERATION_MODE_FULL)
   vMatrixSize = [2, 5, 10, 20, 50, 100, 200, 300, 500, 750, 1000, 2000, 3000, 4000];
-  # mDataDimensions = [3 50 25; 3 500 250; 3 5000 2500; 30 50 25; 30 500 250; 30 5000 2500; 300 50 25;
-  #                   300 500 250; 300 5000 2500; 3000 50 25; 3000 500 250; 3000 5000 2500];
   numIterations = 5;
 end
 

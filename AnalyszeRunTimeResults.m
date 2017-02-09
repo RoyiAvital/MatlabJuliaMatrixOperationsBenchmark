@@ -26,13 +26,15 @@ cLegendString = {['MATLAB'], ['Julia']};
 figureIdx           = 0;
 figureCounterSpec   = '%04d';
 
-
-%% Setting Parameters
-
 vMatrixSize = [2, 5, 10, 20, 50, 100, 200, 300, 500, 750, 1000, 2000, 3000, 4000];
 cFunctionString = {['Matrix Generation'], ['Matrix Addition'], ['Matrix Multiplication'], ['Matrix Reductions'], ...
     ['Element Wise Operations'], ['SVD'], ['Eigen Decomposition'], ['Matrix Inversion'], ['Linear System Solution'], ...
     ['Linear Least Squares'], ['Cholesky Decomposition'], ['Squared Distance Matrix']};
+
+
+%% Setting Parameters
+
+generateImages = ON;
 
 
 %% Loading Data
@@ -74,8 +76,10 @@ for ii = 1:numTests
         'FontSize', fontSizeAxis);
     hLegend = ClickableLegend(cLegendString);
     
-    set(hAxes, 'LooseInset', [0.05, 0.05, 0.05, 0.05]);
-    saveas(hFigure,['Figure', num2str(figureIdx, figureCounterSpec), '.png']);
+    if(generateImages == ON)
+        set(hAxes, 'LooseInset', [0.05, 0.05, 0.05, 0.05]);
+        saveas(hFigure,['Figure', num2str(figureIdx, figureCounterSpec), '.png']);
+    end
 
 end
 
