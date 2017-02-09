@@ -132,16 +132,16 @@ It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcas
  * For each function the output was set to dependent on the calculation which was timed to prevent JIT optimizations which excludes the calculation (MATLAB infers the calculation has no effect on the output and doesn't run it).
 
  
-  [01]: http://imgur.com/jQu6I7d.png
-  [02]: http://imgur.com/c9tcpxe.png
-  [03]: http://imgur.com/FhiMQuU.png
-  [04]: http://imgur.com/d05Zw6r.png
-  [05]: http://imgur.com/XRzgznb.png
-  [06]: http://imgur.com/yq1F1u9.png
-  [07]: http://imgur.com/WppCB1v.png
-  [08]: http://imgur.com/WppCB1v.png
-  [09]: http://imgur.com/XRzgznb.png
-  [10]: http://imgur.com/yq1F1u9.png
-  [11]: http://imgur.com/WppCB1v.png
-  [12]: http://imgur.com/WppCB1v.png
+  [01]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0001.png
+  [02]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0002.png
+  [03]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0003.png
+  [04]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0004.png
+  [05]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0005.png
+  [06]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0006.png
+  [07]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0007.png
+  [08]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0008.png
+  [09]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0009.png
+  [10]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0010.png
+  [11]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0011.png
+  [12]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0012.png
   [20]: http://julialang.org/blog/2017/01/moredots
