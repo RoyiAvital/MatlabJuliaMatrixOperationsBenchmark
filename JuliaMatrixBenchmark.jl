@@ -111,17 +111,17 @@ end
 
 function ElementWiseOperationsRunTime( matrixSize )
 
-    mX = randn(matrixSize, matrixSize);
-    mY = randn(matrixSize, matrixSize);
+  mX = randn(matrixSize, matrixSize);
+  mY = randn(matrixSize, matrixSize);
 
-    tic();
-    mA = sqrt.(abs.(mX)) .+ sin.(mY);
-    mB = exp.(-(mA .^ 2));
-    runTime = toq();
+  mA = similar(mX); mB = similar(mX)
+  runTime = @elapsed for i in eachindex(mX)
+    mA[i] = sqrt(abs(mX[i])) + sin(mY[i])
+    mB[i] = exp(-(mA[i]^ 2))
+    mA[i] += mB[i]
+  end
 
-    mA = mA .+ mB;
-
-  return mA, runTime;
+  mA, runTime
 end
 
 function SvdRunTime( matrixSize )
