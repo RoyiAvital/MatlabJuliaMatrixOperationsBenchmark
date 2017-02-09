@@ -118,8 +118,9 @@ function ElementWiseOperationsRunTime( matrixSize )
   runTime = @elapsed for i in eachindex(mX)
     mA[i] = sqrt(abs(mX[i])) + sin(mY[i])
     mB[i] = exp(-(mA[i]^ 2))
-    mA[i] += mB[i]
   end
+  
+  mA = mA .+ mB
 
   mA, runTime
 end
