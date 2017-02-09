@@ -123,16 +123,38 @@ It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcas
  * MATLAB R2016b.
  * Julia Pro 0.5.0.4.
 
-## TODO
- * Check if Julia code is efficient.
- * Add Python (NumPy).
- * Add more tests.
+## How to Run
+### Run the Benchmark - Julia
+Download `JuliaMatrixBenchmark.jl`.  
+From console:
+```
+include("JuliaMatrixBenchmark.jl");
+mRunTime = JuliaMatrixBenchmark();
+```
+
+### Run the Benchmark - MATLAB
+Download `MatlabMatrixBenchmark.m`.  
+From console:
+```
+mRunTime = JuliaMatrixBenchmark();
+```
+
+### Run The Analysis
+ * Download `InitScript.m`, `ClickableLegend.m` and `AnalyszeRunTimeResults.m`.
+ * Run both MATLAB and Julia Benchmark to create the CSV data file. Make sure all data and files are in the same folder.
+ * From MATLAB command line `run('AnalyszeRunTimeResults.m')`.
+ * Images of the performance test will be created and displayed.
 
 ## Remarks
  * I'm not an expert in Julia (Actually was my first time). Hence, if there are way to improve run time, please share. I did took advise from [More Dots: Syntactic Loop Fusion in Julia][20].
  * This is only a small sub set of operations. I will expand it with time. If you have ideas, please share.
  * For each function the output was set to dependent on the calculation which was timed to prevent JIT optimizations which excludes the calculation (MATLAB infers the calculation has no effect on the output and doesn't run it).
  * The MATLAB code uses Broadcasting which is a feature added on MATLAB R2016b. Hence the test requires this version or one must adjust the code (Use `bsxfun()`).
+
+## TODO
+ * Check if Julia code is efficient.
+ * Add Python (NumPy).
+ * Add more tests.* 
 
  
   [01]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0001.png
