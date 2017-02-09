@@ -120,6 +120,8 @@ It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcas
  * CPU - Intel Core I7 6800K @ 3.4 [GHz].
  * Memory - 4 * 8 [GB] 2166 [MHz] (G.Skill F4 2800C-16-8GRK).
  * Mother Board - ASRock X99 Killer (BIOS Version P3.20).
+ * MATLAB R2016b.
+ * Julia Pro 0.5.0.4.
 
 ## TODO
  * Check if Julia code is efficient.
