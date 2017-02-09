@@ -118,7 +118,7 @@ It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcas
 
 ## System Configuration
  * CPU - Intel Core I7 6800K @ 3.4 [GHz].
- * Memory - 4 * 8 [GB] 2166 [MHz] (G.Skill F4 2800C-16-8GRK).
+ * Memory - 4 * 8 [GB] @ 2166 [MHz] - G.Skill F4 2800C-16-8GRK.
  * Mother Board - ASRock X99 Killer (BIOS Version P3.20).
  * MATLAB R2016b.
  * Julia Pro 0.5.0.4.
@@ -132,6 +132,7 @@ It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcas
  * I'm not an expert in Julia (Actually was my first time). Hence, if there are way to improve run time, please share. I did took advise from [More Dots: Syntactic Loop Fusion in Julia][20].
  * This is only a small sub set of operations. I will expand it with time. If you have ideas, please share.
  * For each function the output was set to dependent on the calculation which was timed to prevent JIT optimizations which excludes the calculation (MATLAB infers the calculation has no effect on the output and doesn't run it).
+ * The MATLAB code uses Broadcasting which is a feature added on MATLAB R2016b. Hence the test requires this version or one must adjust the code (Use `bsxfun()`).
 
  
   [01]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0001.png
