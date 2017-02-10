@@ -81,30 +81,35 @@ end
 
 function MatrixAdditionRunTime( matrixSize )
 
-  mX = randn(matrixSize, matrixSize);
-  mY = randn(matrixSize, matrixSize);
-  sacalrA = rand(1);
-  sacalrB = rand(1);
+  mX = randn(matrixSize, matrixSize)
+  mY = randn(matrixSize, matrixSize)
+  sacalrA = rand()
+  sacalrB = rand()
 
-  tic();
-  mA = (sacalrA .* mX) .+ (sacalrB .* mY);
-  runTime = toq();
+  mA = similar(mX)
+  runTime = @elapsed for i in eachindex(mA)
+    mA[i] = (sacalrA * mX[i]) + (sacalrB * mY[i])
+  end
 
-  return mA, runTime;
+  mA, runTime
 end
 
 function MatrixMultiplicationRunTime( matrixSize )
 
-  mX = randn(matrixSize, matrixSize);
-  mY = randn(matrixSize, matrixSize);
-  sacalrA = rand(1);
-  sacalrB = rand(1);
+  mX = randn(matrixSize, matrixSize)
+  mY = randn(matrixSize, matrixSize)
+  sacalrA = rand()
+  sacalrB = rand()
+  
+  runTime = @elapsed begin
+    for i in eachindex(mX)
+      mX[i] += sacalrA
+      mY[i] += sacalrB
+    end
+    mA = mX * mY
+  end
 
-  tic();
-  mA = (sacalrA .+ mX) * (sacalrB .+ mY);
-  runTime = toq();
-
-  return mA, runTime;
+  return mA, runTime
 end
 
 function MatrixQuadraticFormRunTime( matrixSize )
