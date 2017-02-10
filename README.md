@@ -7,13 +7,16 @@ Better yet if it would assist Julia / MATLAB Developers to extract even better p
 
 ## Results
 This sections displays the results of the sub tests of the benchmark.
-Each sub test is being executed several times and the median of run times is taken.
+Each sub test is being executed several times and the median of run times is taken.  
+The tests are divided into 3 sets.
 
 ### Matrix Generation
 
 Generation of a Square Matrix using the `randn()` function and `rand()`.
  * MATLAB Code - `mA = randn(matrixSize, matrixSize)`, `mB = randn(matrixSize, matrixSize)`.
  * Julia Code - `mA = randn(matrixSize, matrixSize)`, `mB = randn(matrixSize, matrixSize)`.
+
+Belongs to set 0001.
 
 ![Matrix Generation][01]
 
@@ -23,6 +26,8 @@ Addition of 2 square matrices where each is multiplied by a scalar.
  * MATLAB Code - `mA = (scalarA .* mX) + (scalarB .* mY)`.
  * Julia Code - `mA = (scalarA .* mX) .+ (scalarB .* mY)` (Using the dot for [Loop Fusion][20]).
 
+Belongs to set 0001.
+
 ![Matrix Addition][02]
 
 ### Matrix Multiplication
@@ -31,6 +36,8 @@ Multiplication of 2 square matrices after a scalar is added to each.
  * MATLAB Code - `mA = (scalarA + mX) * (scalarB + mY)`.
  * Julia Code - `mA = (scalarA .+ mX) * (scalarB .+ mY)` (Using the dot for [Loop Fusion][20]).
 
+Belongs to set 0001.
+
 ![Matrix Multiplication][03]
 
 ### Matrix Quadratic Form
@@ -38,6 +45,8 @@ Multiplication of 2 square matrices after a scalar is added to each.
 Calculation of Matrix / Vector Quadratic Form.  
  * MATLAB Code - `mA = (scalarA + mX) * (scalarB + mY)`.
  * Julia Code - `mA = (vX.' * mA * vX) .+ (vB.' * vX) .+ sacalrC;` (Using the dot for [Loop Fusion][20]).
+
+Belongs to set 0001.
 
 ![Matrix Quadratic Form][04]
 
@@ -50,7 +59,19 @@ The result is summed with broadcasting to generate a new matrix.
  * MATLAB Code - `mA = (vX.' * mA * vX) + (vB.' * vX) + sacalrC;`.
  * Julia Code - `mA = sum(mX, 1) .+ minimum(mY, 2)` (Using the dot for [Loop Fusion][20]).
 
+Belongs to set 0001.
+
 ![Matrix Reductions][05]
+
+### Element Wise Operations
+Set of operations which are element wise.
+
+ * MATLAB Code - `mD = abs(mA) + sin(mB);`, `mE = exp(-(mA .^ 2));` and `mF = (-mB + sqrt((mB .^ 2) - (4 .* mA .* mC))) ./ (2 .* mA);`.
+ * Julia Code - `mD = abs.(mA) .+ sin.(mB);`, `mE = exp.(-(mA .^ 2));` and `mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);` (Using the dot for [Loop Fusion][20]).
+
+Belongs to set 0001.
+
+![Element Wise Operations][06]
 
 ### Matrix Exponent
 
@@ -59,7 +80,9 @@ Calculation of Matrix Exponent.
  * MATLAB Code - `mA = expm(mX);`.
  * Julia Code - `mA = expm(mX);`.
 
-![Matrix Exponent][06]
+Belongs to set 0002.
+
+![Matrix Exponent][07]
 
 ### Matrix Square Root
 
@@ -68,15 +91,9 @@ Calculation of Matrix Square Root.
  * MATLAB Code - `mA = sqrtm(mX);`.
  * Julia Code - `mA = sqrtm(mX);`.
 
-![Matrix Square Root][07]
- 
-### Element Wise Operations
-Set of operations which are element wise.
+Belongs to set 0002.
 
- * MATLAB Code - `mD = abs(mA) + sin(mB);`, `mE = exp(-(mA .^ 2));` and `mF = (-mB + sqrt((mB .^ 2) - (4 .* mA .* mC))) ./ (2 .* mA);`.
- * Julia Code - `mD = abs.(mA) .+ sin.(mB);`, `mE = exp.(-(mA .^ 2));` and `mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);` (Using the dot for [Loop Fusion][20]). 
-
-![Element Wise Operations][08]
+![Matrix Square Root][08]
 
 ### SVD
 
@@ -84,6 +101,8 @@ Calculation of all 3 SVD Matrices.
 
  * MATLAB Code - `[mU, mS, mV] = svd(mX)`.
  * Julia Code - `mU, mS, mV = svd(mX, thin = false)`.
+
+Belongs to set 0002.
 
 ![SVD][09]
 
@@ -94,6 +113,8 @@ Calculation of 2 Eigen Decomposition Matrices.
  * MATLAB Code - `[mD, mV] = eig(mX)`.
  * Julia Code - `mD, mV = eig(mX)`.
 
+Belongs to set 0002.
+
 ![Eigen Decomposition][10]
 
 ### Cholesky Decomposition
@@ -102,6 +123,8 @@ Calculation of Cholseky Decomposition.
 
  * MATLAB Code - `mA = chol(mX)`.
  * Julia Code - `mA = chol(mX)`.
+
+Belongs to set 0002.
 
 ![Cholseky Decomposition][11]
 
@@ -112,6 +135,8 @@ Calculation of the Inverse and Pseudo Inverse of a matrix.
  * MATLAB Code - `mA = inv(mX)` and `mB = pinv(mY)`.
  * Julia Code - `mA = inv(mX)` and `mB = pinv(mY)`.
 
+Belongs to set 0002.
+
 ![Matrix Inversion][12]
 
 ### Linear System Solution
@@ -120,6 +145,8 @@ Solving a Vector Linear System and a Matrix Linear System.
 
  * MATLAB Code - `vX = mA \ vB` and `mX = mA \ mB`.
  * Julia Code - `vX = mA \ vB` and `mX = mA \ mB`.
+
+Belongs to set 0003.
 
 ![Linear System Solution][13]
 
@@ -130,6 +157,8 @@ This is combines Matrix Transpose, Matrix Multiplication (Done at onces), Matrix
 
  * MATLAB Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
  * Julia Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
+
+Belongs to set 0003.
 
 ![Linear Least Squares][14]
 
@@ -142,6 +171,8 @@ It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcas
 
  * MATLAB Code - `mA = sum(mX .^ 2, 1).' - (2 .* mX.' * mY) + sum(mY .^ 2, 1)`.
  * Julia Code - `mA = sum(mX .^ 2, 1).' .- (2 .* mX.' * mY) .+ sum(mY .^ 2, 1)` (Using the dot for [Loop Fusion][20]).
+
+Belongs to set 0003.
 
 ![Squared Distance Matrix][15]
 
@@ -158,24 +189,23 @@ At the time of the test no other application is running (Anti Virus is disabled)
 
 ## How to Run
 ### Run the Benchmark - Julia
-Download `JuliaMatrixBenchmark.jl`.  
+Download `JuliaMatrixBenchmark.jl`, `JuliaMatrixBenchmark0001.jl`, `JuliaMatrixBenchmark0002.jl` and `JuliaMatrixBenchmark0003.jl`.  
 From console:
 ```
 include("JuliaMatrixBenchmark.jl");
-mRunTime = JuliaMatrixBenchmark();
 ```
 
 ### Run the Benchmark - MATLAB
-Download `MatlabMatrixBenchmark.m`.  
+Download `MatlabMatrixBenchmark.m`, `MatlabMatrixBenchmark0001.m`, `MatlabMatrixBenchmark0002.m` and `MatlabMatrixBenchmark0003.m`.  
 From console:
 ```
 mRunTime = JuliaMatrixBenchmark();
 ```
 
 ### Run The Analysis
- * Download `InitScript.m`, `ClickableLegend.m` and `AnalyszeRunTimeResults.m`.
- * Run both MATLAB and Julia Benchmark to create the CSV data file. Make sure all data and files are in the same folder.
- * From MATLAB command line `run('AnalyszeRunTimeResults.m')`.
+ * Download `InitScript.m`, `ClickableLegend.m`, `AnalyszeRunTimeResults0001.m`, `AnalyszeRunTimeResults0002.m` and `AnalyszeRunTimeResults0003.m`.
+ * Run both MATLAB and Julia Benchmark to create the CSV data files. Make sure all data and files are in the same folder.
+ * From MATLAB command line `run('AnalyszeRunTimeResults0001.m')` / `run('AnalyszeRunTimeResults0002.m')` / `run('AnalyszeRunTimeResults0003.m')`.
  * Images of the performance test will be created and displayed.
 
 ## Remarks

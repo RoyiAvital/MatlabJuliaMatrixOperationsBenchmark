@@ -18,18 +18,16 @@ run('InitScript.m');
 MATLAB_IDX  = 1;
 JULIA_IDX   = 2;
 
-MATLAB_RUN_TIME_FILE_NAME   = 'RunTimeMatlab.csv';
-JULIA_RUN_TIME_FILE_NAME    = 'RunTimeJulia.csv';
+MATLAB_RUN_TIME_FILE_NAME   = 'RunTimeMatlab0003.csv';
+JULIA_RUN_TIME_FILE_NAME    = 'RunTimeJulia0003.csv';
 
 cLegendString = {['MATLAB'], ['Julia']};
 
-figureIdx           = 0;
+figureIdx           = 12;
 figureCounterSpec   = '%04d';
 
-vMatrixSize = [2, 5, 10, 20, 50, 100, 200, 300, 500, 750, 1000, 2000, 3000, 4000];
-cFunctionString = {['Matrix Generation'], ['Matrix Addition'], ['Matrix Multiplication'], ['Matrix Quadratic Form'], ['Matrix Reductions'], ...
-    ['Matrix Exponential'], ['Matrix Squared Root'], ['Element Wise Operations'], ['SVD'], ['Eigen Decomposition'], ['Cholesky Decomposition'], ...
-    ['Matrix Inversion'], ['Linear System Solution'], ['Linear Least Squares'], ['Squared Distance Matrix']};
+vMatrixSize = csvread('vMatrixSizeFull.csv');
+cFunctionString = {['Linear System Solution'], ['Linear Least Squares'], ['Squared Distance Matrix']};
 
 
 %% Setting Parameters
