@@ -1,13 +1,15 @@
 function [ mRunTime ] = MatlabMatrixBenchmark0002( operationMode )
 % ----------------------------------------------------------------------------------------------- %
-% MATLAB Matrix Operations Benchmark
+% MATLAB Matrix Operations Benchmark - Test Suite 0002
 % Reference:
 %   1. C.
 % Remarks:
-%   1.  W.
+%   1.  Keep 'mX' "Read Only" within the functions to match Julia (Pass by Address).
 % TODO:
 %   1.  A
 %   Release Notes:
+%   -   1.0.002     10/02/2017  Royi Avital
+%       *   Added generation of 'mX' once outside the functions.
 %   -   1.0.001     09/02/2017  Royi Avital
 %       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
 %       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
@@ -25,10 +27,6 @@ ON      = 1;
 
 OPERATION_MODE_PARTIAL  = 1; %<! For Testing (Runs Fast)
 OPERATION_MODE_FULL     = 2;
-
-if(exist('operationMode', 'var') == FALSE)
-    operationMode = OPERATION_MODE_FULL;
-end
 
 cRunTimeFunctions = {@MatrixExpRunTime, @MatrixSqrtRunTime, ...
     @SvdRunTime, @EigRunTime, @CholDecRunTime, @MatInvRunTime};
@@ -49,11 +47,12 @@ mRunTime = zeros(length(vMatrixSize), length(cRunTimeFunctions), numIterations);
 hTotelRunTimer = tic();
 for ii = 1:length(vMatrixSize)
     matrixSize = vMatrixSize(ii);
+    mX = randn(matrixSize, matrixSize);
     disp(['Matrix Size - ', num2str(matrixSize)]);
     for jj = 1:length(cRunTimeFunctions)
         disp(['Processing ', num2str(cFunctionString{jj}), ' Matrix Size ', num2str(matrixSize)]);
         for kk = 1:numIterations
-            [mA, mRunTime(ii, jj, kk)] = cRunTimeFunctions{jj}(matrixSize);
+            [mA, mRunTime(ii, jj, kk)] = cRunTimeFunctions{jj}(matrixSize, mX);
         end
         disp(['Finished Processing ', num2str(cFunctionString{jj})]);
     end
@@ -70,9 +69,7 @@ csvwrite('RunTimeMatlab0002.csv', mRunTime);
 end
 
 
-function [ mA, runTime ] = MatrixExpRunTime( matrixSize )
-
-mX = randn(matrixSize, matrixSize);
+function [ mA, runTime ] = MatrixExpRunTime( matrixSize, mX )
 
 tic();
 mA = expm(mX);
@@ -81,21 +78,18 @@ runTime = toc();
 
 end
 
-function [ mA, runTime ] = MatrixSqrtRunTime( matrixSize )
+function [ mA, runTime ] = MatrixSqrtRunTime( matrixSize, mX )
 
-mX = randn(matrixSize, matrixSize);
-mX = mX.' * mX;
+mY = mX.' * mX;
 
 tic();
-mA = sqrtm(mX);
+mA = sqrtm(mY);
 runTime = toc();
 
 
 end
 
-function [ mA, runTime ] = SvdRunTime( matrixSize )
-
-mX = randn(matrixSize, matrixSize);
+function [ mA, runTime ] = SvdRunTime( matrixSize, mX )
 
 tic();
 [mU, mS, mV] = svd(mX);
@@ -106,9 +100,7 @@ mA = mU + mS + mV;
 
 end
 
-function [ mA, runTime ] = EigRunTime( matrixSize )
-
-mX = randn(matrixSize, matrixSize);
+function [ mA, runTime ] = EigRunTime( matrixSize, mX )
 
 tic();
 [mD, mV] = eig(mX);
@@ -119,27 +111,24 @@ mA = mD + mV;
 
 end
 
-function [ mA, runTime ] = CholDecRunTime( matrixSize )
+function [ mA, runTime ] = CholDecRunTime( matrixSize, mX )
 
-mX = randn(matrixSize, matrixSize);
-mX = mX.' * mX;
+mY = mX.' * mX;
 
 tic();
-mA = chol(mX);
+mA = chol(mY);
 runTime = toc();
 
   
 end
 
-function [ mA, runTime ] = MatInvRunTime( matrixSize )
+function [ mA, runTime ] = MatInvRunTime( matrixSize, mX )
 
-mX = randn(matrixSize, matrixSize);
-mY = randn(matrixSize, matrixSize);
-mX = mX.' * mX;
+mY = mX.' * mX;
 
 tic();
-mA = inv(mX);
-mB = pinv(mY);
+mA = inv(mY);
+mB = pinv(mX);
 runTime = toc();
 
 mA = mA + mB;

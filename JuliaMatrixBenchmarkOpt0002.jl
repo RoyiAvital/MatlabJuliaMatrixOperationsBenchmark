@@ -1,16 +1,14 @@
 # ----------------------------------------------------------------------------------------------- #
-# Julia Matrix Operations Benchmark - Test Suite 0001
+# Julia Matrix Operations Benchmark - Test Suite 0002
 # Reference:
 #   1. C.
 # Remarks:
-#   1.  W.
+#   1.  This is optimized version of Julia Benchmark.
 # TODO:
 #   1.  A
 #   Release Notes:
 #   -   1.0.002     10/02/2017  Royi Avital
-#       *   Added generation of 'mX' and 'mY' once outside the functions.
-#       *   Fixed issue with the Quadratic Form.
-#       *   Optimized creation of scalars and vectors.
+#       *   Added generation of 'mX' once outside the functions.
 #   -   1.0.001     09/02/2017  Royi Avital
 #       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
 #       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
@@ -21,16 +19,16 @@
 #       *   First release version.
 # ----------------------------------------------------------------------------------------------- #
 
-function JuliaMatrixBenchmark0001( operationMode = 2 )
+function JuliaMatrixBenchmarkOpt0002( operationMode = 2 )
 
   OPERATION_MODE_PARTIAL  = 1; # For Testing (Runs Fast)
   OPERATION_MODE_FULL     = 2;
 
-  cRunTimeFunctions = [MatrixGenerationRunTime, MatrixAdditionRunTime, MatrixMultiplicationRunTime,
-    MatrixQuadraticFormRunTime, MatrixReductionsRunTime, ElementWiseOperationsRunTime];
+  cRunTimeFunctions = [MatrixExpRunTime, MatrixSqrtRunTime, SvdRunTime, EigRunTime,
+                      CholDecRunTime, MatInvRunTime];
 
-  cFunctionString = ["Matrix Generation", "Matrix Addition", "Matrix Multiplication", "Matrix Quadratic Form",
-                    "Matrix Reductions", "Element Wise Operations"];
+  cFunctionString = ["Matrix Exponential", "Matrix Square Root", "SVD", "Eigen Decomposition",
+                  "Cholesky Decomposition", "Matrix Inversion"]
 
   if(operationMode == OPERATION_MODE_PARTIAL)
     vMatrixSize = round(Int64, squeeze(readcsv("vMatrixSizePartial.csv"), 1));
@@ -48,12 +46,11 @@ function JuliaMatrixBenchmark0001( operationMode = 2 )
   for ii = 1:length(vMatrixSize)
     matrixSize = vMatrixSize[ii];
     mX = randn(matrixSize, matrixSize);
-    mY = randn(matrixSize, matrixSize);
     println("Matrix Size - $matrixSize");
     for jj = 1:length(cRunTimeFunctions)
       println("Processing $(cFunctionString[jj]) Matrix Size $matrixSize");
       for kk = 1:numIterations
-        mA, mRunTime[ii, jj, kk] = cRunTimeFunctions[jj](matrixSize, mX, mY);
+        mA, mRunTime[ii, jj, kk] = cRunTimeFunctions[jj](matrixSize, mX);
       end
       println("Finished Processing $(cFunctionString[jj])");
     end
@@ -65,83 +62,75 @@ function JuliaMatrixBenchmark0001( operationMode = 2 )
 
   println("Finished the Benchmark in $totalRunTime [Sec]");
 
-  writecsv("RunTimeJulia0001.csv", mRunTime);
+  writecsv("RunTimeJuliaOpt0002.csv", mRunTime);
 
   return mRunTime;
 
 end
 
-function MatrixGenerationRunTime( matrixSize, mX, mY )
+function MatrixExpRunTime( matrixSize, mX )
 
   tic();
-  mA = randn(matrixSize, matrixSize);
-  mB = rand(matrixSize, matrixSize);
-  runTime = toq();
-
-  mA = mA .+ mB;
-
-  return mA, runTime;
-end
-
-function MatrixAdditionRunTime( matrixSize, mX, mY )
-
-  sacalrA = rand();
-  sacalrB = rand();
-
-  tic();
-  mA = (sacalrA .* mX) .+ (sacalrB .* mY);
+  mA = expm(mX);
   runTime = toq();
 
   return mA, runTime;
 end
 
-function MatrixMultiplicationRunTime( matrixSize, mX, mY )
+function MatrixSqrtRunTime( matrixSize, mX )
 
-  sacalrA = rand();
-  sacalrB = rand();
+  mY = mX.' * mX;
 
   tic();
-  mA = (sacalrA .+ mX) * (sacalrB .+ mY);
+  mA = sqrtm(mY);
   runTime = toq();
 
   return mA, runTime;
 end
 
-function MatrixQuadraticFormRunTime( matrixSize, mX, mY )
-
-  vX = randn(matrixSize);
-  vB = randn(matrixSize);
-  sacalrC = rand();
+function SvdRunTime( matrixSize, mX )
 
   tic();
-  mA = ((mX * vX).' * (mX * vX)) .+ (vB.' * vX) .+ sacalrC;
+  mU, mS, mV = svd(mX, thin = false);
+  runTime = toq();
+
+  mA = mU .+ mS .+ mV;
+
+  return mA, runTime;
+end
+
+function EigRunTime( matrixSize, mX )
+
+  tic();
+  mD, mV = eig(mX);
+  runTime = toq();
+
+  mA = mD .+ mV;
+
+  return mA, runTime;
+end
+
+function CholDecRunTime( matrixSize, mX )
+
+  mY = mX.' * mX;
+
+  tic();
+  mA = chol(mY);
   runTime = toq();
 
   return mA, runTime;
 end
 
-function MatrixReductionsRunTime( matrixSize, mX, mY )
+function MatInvRunTime( matrixSize, mX )
 
-  tic();
-  mA = sum(mX, 1) .+ minimum(mY, 2); #Broadcasting
-  runTime = toq();
+    mY = mX.' * mX;
 
-  return mA, runTime;
-end
+    tic();
+    mA = inv(mY);
+    mB = pinv(mX);
+    runTime = toq();
 
-function ElementWiseOperationsRunTime( matrixSize, mX, mY )
-
-  mA = rand(matrixSize, matrixSize);
-  mB = 3 .+ rand(matrixSize, matrixSize);
-  mC = rand(matrixSize, matrixSize);
-
-  tic();
-  mD = abs.(mA) .+ sin.(mB);
-  mE = exp.(-(mA .^ 2));
-  mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);
-  runTime = toq();
-
-  mA = mD .+ mE .+ mF;
+    mA = mA .+ mB;
 
   return mA, runTime;
 end

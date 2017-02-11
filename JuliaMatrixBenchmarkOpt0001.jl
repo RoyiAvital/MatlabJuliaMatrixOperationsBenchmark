@@ -3,7 +3,7 @@
 # Reference:
 #   1. C.
 # Remarks:
-#   1.  W.
+#   1.  This is optimized version of Julia Benchmark.
 # TODO:
 #   1.  A
 #   Release Notes:
@@ -21,7 +21,7 @@
 #       *   First release version.
 # ----------------------------------------------------------------------------------------------- #
 
-function JuliaMatrixBenchmark0001( operationMode = 2 )
+function JuliaMatrixBenchmarkOpt0001( operationMode = 2 )
 
   OPERATION_MODE_PARTIAL  = 1; # For Testing (Runs Fast)
   OPERATION_MODE_FULL     = 2;
@@ -65,7 +65,7 @@ function JuliaMatrixBenchmark0001( operationMode = 2 )
 
   println("Finished the Benchmark in $totalRunTime [Sec]");
 
-  writecsv("RunTimeJulia0001.csv", mRunTime);
+  writecsv("RunTimeJuliaOpt0001.csv", mRunTime);
 
   return mRunTime;
 

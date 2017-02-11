@@ -24,7 +24,7 @@ Belongs to set 0001.
 
 Addition of 2 square matrices where each is multiplied by a scalar.  
  * MATLAB Code - `mA = (scalarA .* mX) + (scalarB .* mY)`.
- * Julia Code - `mA = (scalarA .* mX) .+ (scalarB .* mY)` (Using the dot for [Loop Fusion][20]).
+ * Julia Code - `mA = (scalarA .* mX) .+ (scalarB .* mY)` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0001.
 
@@ -34,7 +34,7 @@ Belongs to set 0001.
 
 Multiplication of 2 square matrices after a scalar is added to each.  
  * MATLAB Code - `mA = (scalarA + mX) * (scalarB + mY)`.
- * Julia Code - `mA = (scalarA .+ mX) * (scalarB .+ mY)` (Using the dot for [Loop Fusion][20]).
+ * Julia Code - `mA = (scalarA .+ mX) * (scalarB .+ mY)` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0001.
 
@@ -44,7 +44,7 @@ Belongs to set 0001.
 
 Calculation of Matrix / Vector Quadratic Form.  
  * MATLAB Code - `mA = (scalarA + mX) * (scalarB + mY)`.
- * Julia Code - `mA = (vX.' * mA * vX) .+ (vB.' * vX) .+ sacalrC;` (Using the dot for [Loop Fusion][20]).
+ * Julia Code - `mA = (vX.' * mA * vX) .+ (vB.' * vX) .+ sacalrC;` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0001.
 
@@ -57,7 +57,7 @@ The operation is done on 2 different matrices on along different dimensions.
 The result is summed with broadcasting to generate a new matrix.
 
  * MATLAB Code - `mA = (vX.' * mA * vX) + (vB.' * vX) + sacalrC;`.
- * Julia Code - `mA = sum(mX, 1) .+ minimum(mY, 2)` (Using the dot for [Loop Fusion][20]).
+ * Julia Code - `mA = sum(mX, 1) .+ minimum(mY, 2)` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0001.
 
@@ -67,7 +67,7 @@ Belongs to set 0001.
 Set of operations which are element wise.
 
  * MATLAB Code - `mD = abs(mA) + sin(mB);`, `mE = exp(-(mA .^ 2));` and `mF = (-mB + sqrt((mB .^ 2) - (4 .* mA .* mC))) ./ (2 .* mA);`.
- * Julia Code - `mD = abs.(mA) .+ sin.(mB);`, `mE = exp.(-(mA .^ 2));` and `mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);` (Using the dot for [Loop Fusion][20]).
+ * Julia Code - `mD = abs.(mA) .+ sin.(mB);`, `mE = exp.(-(mA .^ 2));` and `mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0001.
 
@@ -170,11 +170,22 @@ This is calculation is needed for instance in the K-Means algorithm.
 It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcasting. 
 
  * MATLAB Code - `mA = sum(mX .^ 2, 1).' - (2 .* mX.' * mY) + sum(mY .^ 2, 1)`.
- * Julia Code - `mA = sum(mX .^ 2, 1).' .- (2 .* mX.' * mY) .+ sum(mY .^ 2, 1)` (Using the dot for [Loop Fusion][20]).
+ * Julia Code - `mA = sum(mX .^ 2, 1).' .- (2 .* mX.' * mY) .+ sum(mY .^ 2, 1)` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0003.
 
 ![Squared Distance Matrix][15]
+
+### K-Means Algorithm
+
+Running 10 iterations of the K-Means Algorithm. 
+
+ * MATLAB Code - See `MatlabMatrixBenchmark0003.m` at `KMeansRunTime()`.
+ * Julia Code - See `JuliaMatrixBenchmark0003.jl` at `KMeansRunTime()`.
+
+Belongs to set 0003.
+
+![K-Means Algorithm][16]
 
 
 ## System Configuration
@@ -182,7 +193,14 @@ Belongs to set 0003.
  * Memory - 4 * 8 [GB] @ 2166 [MHz] - G.Skill F4 2800C-16-8GRK.
  * Mother Board - ASRock X99 Killer (BIOS Version P3.20).
  * MATLAB R2016b.
+    * BLAS Version (`version -blas`) - `Intel(R) Math Kernel Library Version 11.3.1 Product Build 20151021 for Intel(R) 64 architecture applications, CNR branch AVX2`.
+    * LAPACK Version (`cersion -lapack`) - `Intel(R) Math Kernel Library Version 11.3.1 Product Build 20151021 for Intel(R) 64 architecture applications, CNR branch AVX2; Linear Algebra PACKage Version 3.5.0`.
  * Julia Pro 0.5.0.4.
+     * Julia Version (`versioninfo()`) - `Julia Version 0.5.0; Commit 3c9d753 (2016-09-19 18:14 UTC)`;
+     * BLAS Version - `BLAS: libopenblas (USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell)`.
+     * LAPACK Version - `libopenblas64_`.
+     * LIBM Version - `libopenlibm`.
+     * LLVM Version - `libLLVM-3.7.1 (ORCJIT, broadwell)`.
  * Windows 10 Professional 64 Bit.
 
 At the time of the test no other application is running (Anti Virus is disabled).
@@ -209,7 +227,7 @@ mRunTime = JuliaMatrixBenchmark();
  * Images of the performance test will be created and displayed.
 
 ## Remarks
- * I'm not an expert in Julia (Actually this was my first time coding Julia). Hence, if there are ways to improve the run time, please share with me. I did took advise from [More Dots: Syntactic Loop Fusion in Julia][20].
+ * I'm not an expert in Julia (Actually this was my first time coding Julia). Hence, if there are ways to improve the run time, please share with me. I did took advise from [More Dots: Syntactic Loop Fusion in Julia][50].
  * This is only a small sub set of operations. I will expand it with time. If you have ideas for small micro benchmark to be added, please share.
  * For each function the output was set to dependent on the calculation which was timed to prevent JIT optimizations which excludes the calculation (MATLAB infers the calculation has no effect on the output and doesn't run it).
  * The MATLAB code uses Broadcasting which is a feature added on MATLAB R2016b. Hence the test requires this version or one must adjust the code (Use `bsxfun()`).
@@ -218,9 +236,9 @@ mRunTime = JuliaMatrixBenchmark();
 ## ToDo
  * Check if Julia code is efficient.
  * Add Python (NumPy).
+ * Add Octave.
  * Add more tests (Some real world algorithms)
      * Orthogonal Matching Pursuit.
-     * K-Means.
      * Reweighted Iterative Least Squares.
  * Devectorize Element Wise Operations (Loop Fusion isn't working yet). See <https://discourse.julialang.org/t/benchmark-matlab-julia-for-matrix-operations/2000/7>.
 
@@ -240,4 +258,5 @@ mRunTime = JuliaMatrixBenchmark();
   [13]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0013.png
   [14]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0014.png
   [15]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0015.png
-  [20]: http://julialang.org/blog/2017/01/moredots
+  [16]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0016.png
+  [50]: http://julialang.org/blog/2017/01/moredots
