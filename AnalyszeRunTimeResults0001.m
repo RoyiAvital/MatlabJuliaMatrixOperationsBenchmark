@@ -18,6 +18,8 @@
 
 run('InitScript.m');
 
+RUN_TIME_DATA_FOLDER = 'RunTimeData\';
+
 MATLAB_IDX  = 1;
 JULIA_IDX   = 2;
 
@@ -42,9 +44,9 @@ generateImages = ON;
 
 %% Loading Data
 
-mRunTimeMatlab      = csvread(MATLAB_RUN_TIME_FILE_NAME);
-mRunTimeJulia       = csvread(JULIA_RUN_TIME_FILE_NAME);
-mRunTimeJuliaOpt    = csvread(JULIA_OPT_RUN_TIME_FILE_NAME);
+mRunTimeMatlab      = csvread([RUN_TIME_DATA_FOLDER, MATLAB_RUN_TIME_FILE_NAME]);
+mRunTimeJulia       = csvread([RUN_TIME_DATA_FOLDER, JULIA_RUN_TIME_FILE_NAME]);
+mRunTimeJuliaOpt    = csvread([RUN_TIME_DATA_FOLDER, JULIA_OPT_RUN_TIME_FILE_NAME]);
 
 numTests    = length(cFunctionString);
 numMatSize  = length(vMatrixSize);

@@ -7,6 +7,8 @@
 # TODO:
 #   1.  A
 #   Release Notes:
+#   -   1.0.003     11/02/2017  Royi Avital
+#       *   Optimized some operations into loop based calculation.
 #   -   1.0.002     10/02/2017  Royi Avital
 #       *   Added generation of 'mX' and 'mY' once outside the functions.
 #       *   Fixed issue with the Quadratic Form.
@@ -85,11 +87,15 @@ end
 
 function MatrixAdditionRunTime( matrixSize, mX, mY )
 
-  sacalrA = rand();
-  sacalrB = rand();
+  scalarA = rand();
+  scalarB = rand();
 
   tic();
-  mA = (sacalrA .* mX) .+ (sacalrB .* mY);
+  # mA = (scalarA .* mX) .+ (scalarB .* mY);
+  mA = Array(Float64, matrixSize, matrixSize);
+  @simd for ii = 1:(matrixSize * matrixSize)
+    @inbounds mA[ii] = (scalarA * mX[ii]) + (scalarB * mY[ii]);
+  end
   runTime = toq();
 
   return mA, runTime;
@@ -97,11 +103,15 @@ end
 
 function MatrixMultiplicationRunTime( matrixSize, mX, mY )
 
-  sacalrA = rand();
-  sacalrB = rand();
+  scalarA = rand();
+  scalarB = rand();
 
   tic();
-  mA = (sacalrA .+ mX) * (sacalrB .+ mY);
+  # mA = (scalarA .+ mX) * (scalarB .+ mY);
+  mA = Array(Float64, matrixSize, matrixSize);
+  @simd for ii = 1:(matrixSize * matrixSize)
+    @inbounds mA[ii] = (scalarA + mX[ii]) * (scalarB + mY[ii]);
+  end
   runTime = toq();
 
   return mA, runTime;
@@ -136,9 +146,23 @@ function ElementWiseOperationsRunTime( matrixSize, mX, mY )
   mC = rand(matrixSize, matrixSize);
 
   tic();
-  mD = abs.(mA) .+ sin.(mB);
-  mE = exp.(-(mA .^ 2));
-  mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);
+  # mD = abs.(mA) .+ sin.(mA);
+  mD = Array(Float64, matrixSize, matrixSize);
+  @simd for ii = 1:(matrixSize * matrixSize)
+    @inbounds mD[ii] = abs(mA[ii]) + sin(mA[ii]);
+  end
+
+  # mE = exp.(-(mA .^ 2));
+  mE = Array(Float64, matrixSize, matrixSize);
+  @simd for ii = 1:(matrixSize * matrixSize)
+    @inbounds mE[ii] = exp(- (mA[ii] * mA[ii]));
+  end
+
+  # mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);
+  mF = Array(Float64, matrixSize, matrixSize);
+  @simd for ii = 1:(matrixSize * matrixSize)
+    @inbounds mF[ii] = (-mB[ii] + sqrt( (mB[ii] * mB[ii]) - (4 * mA[ii] * mC[ii]) )) ./ (2 * mA[ii]);
+  end
   runTime = toq();
 
   mA = mD .+ mE .+ mF;
