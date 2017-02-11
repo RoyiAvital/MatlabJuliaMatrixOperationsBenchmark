@@ -243,20 +243,20 @@ mRunTime = JuliaMatrixBenchmark();
  * Devectorize Element Wise Operations (Loop Fusion isn't working yet). See <https://discourse.julialang.org/t/benchmark-matlab-julia-for-matrix-operations/2000/7>.
 
  
-  [01]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0001.png
-  [02]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0002.png
-  [03]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0003.png
-  [04]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0004.png
-  [05]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0005.png
-  [06]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0006.png
-  [07]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0007.png
-  [08]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0008.png
-  [09]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0009.png
-  [10]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0010.png
-  [11]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0011.png
-  [12]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0012.png
-  [13]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0013.png
-  [14]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0014.png
-  [15]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0015.png
-  [16]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figure0016.png
+  [01]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0001.png
+  [02]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0002.png
+  [03]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0003.png
+  [04]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0004.png
+  [05]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0005.png
+  [06]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0006.png
+  [07]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0007.png
+  [08]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0008.png
+  [09]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0009.png
+  [10]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0010.png
+  [11]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0011.png
+  [12]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0012.png
+  [13]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0013.png
+  [14]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0014.png
+  [15]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0015.png
+  [16]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0016.png
   [50]: http://julialang.org/blog/2017/01/moredots
