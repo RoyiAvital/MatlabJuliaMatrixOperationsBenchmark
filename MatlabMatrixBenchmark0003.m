@@ -1,4 +1,4 @@
-function [ mRunTime ] = MatlabMatrixBenchmark0003( operationMode )
+function [ mRunTime ] = MatlabMatrixBenchmark0003( operationMode, vTestIdx )
 % ----------------------------------------------------------------------------------------------- %
 % MATLAB Matrix Operations Benchmark - Test Suite 0003
 % Reference:
@@ -8,6 +8,8 @@ function [ mRunTime ] = MatlabMatrixBenchmark0003( operationMode )
 % TODO:
 %   1.  A
 %   Release Notes:
+%	- 	1.0.003 	12/02/2017	Royi Avital
+% 		* 	Ability to run only some of the tests.
 %   -   1.0.002     10/02/2017  Royi Avital
 %       *   Added 'KMeansRunTime()'.
 %       *   Added generation of 'mX' once outside the functions.
@@ -26,12 +28,17 @@ TRUE    = 1;
 OFF     = 0;
 ON      = 1;
 
+RUN_TIME_DATA_FOLDER    = 'RunTimeData';
+RUN_TIME_FILE_NAME      = 'RunTimeMatlab0003.csv';
+
 OPERATION_MODE_PARTIAL  = 1; %<! For Testing (Runs Fast)
 OPERATION_MODE_FULL     = 2;
 
-cRunTimeFunctions = {@LinearSystemRunTime, @LeastSquaresRunTime, @CalcDistanceMatrixRunTime, @KMeansRunTime};
+cRunTimeFunctionsBase = {@LinearSystemRunTime, @LeastSquaresRunTime, @CalcDistanceMatrixRunTime, @KMeansRunTime};
 
-cFunctionString = {['Linear System Solution'], ['Linear Least Squares'], ['Squared Distance Matrix'], ['K-Means Run Time']};
+cFunctionStringBase = {['Linear System Solution'], ['Linear Least Squares'], ['Squared Distance Matrix'], ['K-Means Run Time']};
+
+numTests = length(cRunTimeFunctionsBase);
 
 if(operationMode == OPERATION_MODE_PARTIAL)
     vMatrixSize = csvread('vMatrixSizePartial.csv');
@@ -40,6 +47,9 @@ elseif(operationMode == OPERATION_MODE_FULL)
     vMatrixSize = csvread('vMatrixSizeFull.csv');
     numIterations = csvread('numIterationsFull.csv');
 end
+
+cRunTimeFunctions = cRunTimeFunctionsBase(vTestIdx);
+cFunctionString = cFunctionStringBase(vTestIdx);
 
 mRunTime = zeros(length(vMatrixSize), length(cRunTimeFunctions), numIterations);
 
@@ -62,7 +72,23 @@ mRunTime = median(mRunTime, 3);
 
 disp(['Finished the Benchmark in ', num2str(totalRunTime), ' [Sec]']);
 
-csvwrite('RunTimeMatlab0003.csv', mRunTime);
+runTimeFilePath = fullfile(RUN_TIME_DATA_FOLDER, RUN_TIME_FILE_NAME);
+
+mRunTimeBase = 0;
+if(exist(runTimeFilePath, 'file'))
+    mRunTimeBase = csvread(runTimeFilePath);
+end
+
+if(any(size(mRunTimeBase) ~= [length(vMatrixSize), numTests]))
+    % Previous Data has incompatible dimensions
+    mRunTimeBase = zeros([length(vMatrixSize), numTests]);
+end
+
+mRunTimeBase(:, vTestIdx) = mRunTime;
+
+if(operationMode == OPERATION_MODE_FULL)
+    csvwrite(runTimeFilePath, mRunTimeBase);
+end
 
 
 end
