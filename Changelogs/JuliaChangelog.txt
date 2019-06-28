@@ -1,0 +1,181 @@
+New Changelog:
+
+Release Notes:
+
+	2.0: 
+
+		Julia Main (JuliaMain-JuliaBench-JuliaBenchSIMD):
+
+		* Combined separated function files JuliaMatrixBenchmark and JuliaMatrixBenchmarkOp into JuliaBench and JuliaBenchSIMD respectively for easier access
+		* Used @benchmark instead of deprecated and inaccurate tic() and toq(), so all functions now just include the algorithm or operation. Benchmark result may not be comparable to ones in previous versions.
+		* @benchmarks calls allFunctions in local scope (using $). Then the minimum run time among different benchmarks for each function is chosen.
+		* Removed totalRunTime because it does not mean anything anymore
+		* Changed name of some variables and functions to more appropriate ones
+		* Used transpose() instead of deprecated .' 
+		* Used DelimitedFiles.readdlm and DelimitedFiles.writedlm instead of deprecated readcsv and writescv
+		* Removed rounds because readdlim supports converting to int64 itself
+		* Changed deprecated squeeze to droplims
+		* jj for loop changed to be like fun in allFunctions. This allows simply adjusting allFunctions array if want to remove some functions from benchmark
+		* Added dims= to 2nd input argument of minimum(), maximum(), findmin() and sum() functions
+		* Added dummy mY to functions that don't use it. (for consistency in code logic)
+		* Changed deprecated expm with exp
+		* Changed deprecated sqrtm with sqrt
+		* eig changed with eigen. 
+		* vClusterId modified to be compatible with Cartesian indexing
+		* mRunTime is stored in a mat file using MAT package.
+		* tRunTime is a table which has the run time information in a intuitive manner
+		* added 0 benchmark operation mode which is for fast testing only
+		* changed file and folder management
+		* now average of different iteration of Run Times is calculated (for different kk)
+		* automatic work directory setter
+		* In JuliaBenchSIMD, functions that are identical to non SIMD versions are removed from allFunctions
+		* Two types of BLAS is used (MKL.jl and default Julia Blas)
+
+		Julia Analyzer (AnalyszeRunTimeResults-AnalysisJuliaPlotter):
+
+		* Julia Analyzer added for creating plots
+
+
+Old changelog:
+
+
+# ----------------------------------------------------------------------------------------------- #
+# Julia Matrix Operations Benchmark (Main)
+# Reference:
+#   1. C.
+# Remarks:
+#   1.  W.
+# TODO:
+#   1.  A
+#   Release Notes:
+#   -   1.0.000     09/02/2017  Royi Avital
+#       *   First release version.
+# ----------------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
+# Julia Matrix Operations Benchmark - Test Suite 0001
+# Reference:
+#   1. C.
+# Remarks:
+#   1.  W.
+# TODO:
+#   1.  A
+#   Release Notes:
+#   -   1.0.002     10/02/2017  Royi Avital
+#       *   Added generation of 'mX' and 'mY' once outside the functions.
+#       *   Fixed issue with the Quadratic Form.
+#       *   Optimized creation of scalars and vectors.
+#   -   1.0.001     09/02/2017  Royi Avital
+#       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+#       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+#       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+#       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+#       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+#   -   1.0.000     09/02/2017  Royi Avital
+#       *   First release version.
+# ----------------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
+# Julia Matrix Operations Benchmark - Test Suite 0002
+# Reference:
+#   1. C.
+# Remarks:
+#   1.  This is optimized version of Julia Benchmark.
+# TODO:
+#   1.  A
+#   Release Notes:
+#   -   1.0.002     10/02/2017  Royi Avital
+#       *   Added generation of 'mX' once outside the functions.
+#   -   1.0.001     09/02/2017  Royi Avital
+#       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+#       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+#       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+#       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+#       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+#   -   1.0.000     09/02/2017  Royi Avital
+#       *   First release version.
+# ----------------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
+# Julia Matrix Operations Benchmark - Test Suite 0003
+# Reference:
+#   1. C.
+# Remarks:
+#   1.  W.
+# TODO:
+#   1.  A
+#   Release Notes:
+#   -   1.0.002     10/02/2017  Royi Avital
+#       *   Added generation of 'mX' once outside the functions.
+#       *   Optimized creation of scalars and vectors.
+#   -   1.0.001     09/02/2017  Royi Avital
+#       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+#       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+#       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+#       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+#       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+#   -   1.0.000     09/02/2017  Royi Avital
+#       *   First release version.
+# ----------------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
+# Julia Optimized Matrix Operations Benchmark - Test Suite 0001
+# Reference:
+#   1. C.
+# Remarks:
+#   1.  This is optimized version of Julia Benchmark.
+# TODO:
+#   1.  A
+#   Release Notes:
+#   -   1.0.003     11/02/2017  Royi Avital
+#       *   Optimized some operations into loop based calculation.
+#   -   1.0.002     10/02/2017  Royi Avital
+#       *   Added generation of 'mX' and 'mY' once outside the functions.
+#       *   Fixed issue with the Quadratic Form.
+#       *   Optimized creation of scalars and vectors.
+#   -   1.0.001     09/02/2017  Royi Avital
+#       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+#       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+#       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+#       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+#       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+#   -   1.0.000     09/02/2017  Royi Avital
+#       *   First release version.
+# ----------------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
+# Julia Optimized Matrix Operations Benchmark - Test Suite 0002
+# Reference:
+#   1. C.
+# Remarks:
+#   1.  This is optimized version of Julia Benchmark.
+# TODO:
+#   1.  A
+#   Release Notes:
+#   -   1.0.002     10/02/2017  Royi Avital
+#       *   Added generation of 'mX' once outside the functions.
+#   -   1.0.001     09/02/2017  Royi Avital
+#       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+#       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+#       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+#       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+#       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+#   -   1.0.000     09/02/2017  Royi Avital
+#       *   First release version.
+# ----------------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
+# Julia Optimized Matrix Operations Benchmark - Test Suite 0003
+# Reference:
+#   1. C.
+# Remarks:
+#   1.  This is optimized version of Julia Benchmark.
+# TODO:
+#   1.  A
+#   Release Notes:
+#   -   1.0.002     10/02/2017  Royi Avital
+#       *   Added generation of 'mX' once outside the functions.
+#       *   Optimized creation of scalars and vectors.
+#   -   1.0.001     09/02/2017  Royi Avital
+#       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+#       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+#       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+#       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+#       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+#   -   1.0.000     09/02/2017  Royi Avital
+#       *   First release version.
+# ----------------------------------------------------------------------------------------------- #

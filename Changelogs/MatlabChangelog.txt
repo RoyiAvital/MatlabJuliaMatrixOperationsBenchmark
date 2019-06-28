@@ -1,0 +1,125 @@
+New Changelog:
+
+ v 2.0:
+ 		Matlab Main (MatlabMain-MatlabBench):
+
+		* Use cRunTime cell and then tRuntime table to store run time data intuitively
+		* changed file and folder management
+		* use timeIt instead of tic and toc
+		* now the average of median of different iteration of Run Times is calculated (for different kk)
+		* some other changes to be the same as respective Julia function
+
+		Matlab Analyzer (AnalyszeRunTimeResults):
+		
+		* plotting algorithm was improved
+		* use mat files instead of csv
+		* use of tables
+		* removed unnecessary AnalysisInitScript and the logic was added in visualization adjustment
+		* made Matlab AnalyszeRunTimeResults simpler
+
+
+
+Old Change log:
+% ----------------------------------------------------------------------------------------------- %
+% MATLAB Matrix Operations Benchmark
+% Reference:
+%   1. C.
+% Remarks:
+%   1.  W.
+% TODO:
+%   1.  A
+%   Release Notes:
+%   -   1.0.001     09/02/2017  Royi Avital
+%       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+%       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+%       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+%       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+%       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+%   -   1.0.000     09/02/2017  Royi Avital
+%       *   First release version.
+% ----------------------------------------------------------------------------------------------- %
+% ----------------------------------------------------------------------------------------------- %
+% MATLAB Matrix Operations Benchmark - Test Suite 0001
+% Reference:
+%   1. C.
+% Remarks:
+%   1.  Keep 'mX' and 'mY' "Read Only" within the functions to match Julia (Pass by Address).
+% TODO:
+%   1.  A
+%   Release Notes:
+%	- 	1.0.003 	12/02/2017	Royi Avital
+% 		* 	Ability to run only some of the tests.
+%   -   1.0.002     10/02/2017  Royi Avital
+%       *   Added generation of 'mX' and 'mY' once outside the functions.
+%       *   Fixed issue with the Quadratic Form.
+%   -   1.0.001     09/02/2017  Royi Avital
+%       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+%       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+%       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+%       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+%       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+%   -   1.0.000     09/02/2017  Royi Avital
+%       *   First release version.
+% ----------------------------------------------------------------------------------------------- %
+
+% ----------------------------------------------------------------------------------------------- %
+% MATLAB Matrix Operations Benchmark - Test Suite 0002
+% Reference:
+%   1. C.
+% Remarks:
+%   1.  Keep 'mX' "Read Only" within the functions to match Julia (Pass by Address).
+% TODO:
+%   1.  A
+%   Release Notes:
+%	- 	1.0.003 	12/02/2017	Royi Avital
+% 		* 	Ability to run only some of the tests.
+%   -   1.0.002     10/02/2017  Royi Avital
+%       *   Added generation of 'mX' once outside the functions.
+%   -   1.0.001     09/02/2017  Royi Avital
+%       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+%       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+%       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+%       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+%       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+%   -   1.0.000     09/02/2017  Royi Avital
+%       *   First release version.
+% ----------------------------------------------------------------------------------------------- %
+% ----------------------------------------------------------------------------------------------- %
+% MATLAB Matrix Operations Benchmark - Test Suite 0003
+% Reference:
+%   1. C.
+% Remarks:
+%   1.  Keep 'mX' "Read Only" within the functions to match Julia (Pass by Address).
+% TODO:
+%   1.  A
+%   Release Notes:
+%	- 	1.0.003 	12/02/2017	Royi Avital
+% 		* 	Ability to run only some of the tests.
+%   -   1.0.002     10/02/2017  Royi Avital
+%       *   Added 'KMeansRunTime()'.
+%       *   Added generation of 'mX' once outside the functions.
+%   -   1.0.001     09/02/2017  Royi Avital
+%       *   Added 'MatrixExpRunTime()' and 'MatrixSqrtRunTime()'.
+%       *   Added Quadratic Matrix Form Calculation 'MatrixQuadraticFormRunTime()'.
+%       *   Added Univariate Quadratic Function Root to 'ElementWiseOperationsRunTime()'.
+%       *   Updated 'MatrixGenerationRunTime()' to include Uniform Random Number Generation.
+%       *   Fixed issue with 'CalcDistanceMatrixRunTime'.
+%   -   1.0.000     09/02/2017  Royi Avital
+%       *   First release version.
+% ----------------------------------------------------------------------------------------------- %
+% ----------------------------------------------------------------------------------------------- %
+% Analyze MATLAB & Julia Run Time Results
+% Reference:
+%   1. C.
+% Remarks:
+%   1.  W.
+% TODO:
+%   1.  A
+%   Release Notes:
+%   -   1.0.001     11/02/2017  Royi Avital
+%       *   Added support for Julia Optimized.
+%       *   Saving figures into Figures sub folder.
+%   -   1.0.000     09/02/2017  Royi Avital
+%       *   First release version.
+% ----------------------------------------------------------------------------------------------- %
+
