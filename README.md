@@ -12,9 +12,8 @@ It was born from curiosity to to try Julia and if it will assist any user of Jul
 Better yet if it would assist Julia / MATLAB Developers to extract even better performance from their product it served its purpose twice.
 
 ## Results
-This sections displays the results of the sub tests of the benchmark.
-Each sub test is being executed several times and the median of run times is taken.  
-The tests are divided into 3 sets.
+This sections displays the results of the benchmark.
+Each test is being executed several times and the median of run times is taken, then this is repeated for some iterations, and their average is calculated.
 
 ### Matrix Generation
 
