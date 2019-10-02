@@ -1,3 +1,5 @@
+# Attention: This repository is deprecated and moved to https://github.com/juliamatlab/Julia-Matlab-Benchmark
+
 # Matlab & Julia Matrix Operations Benchmark
 
 ## Updated by Amin Yahyaabadi:
