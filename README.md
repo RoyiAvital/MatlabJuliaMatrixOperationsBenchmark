@@ -1,4 +1,4 @@
-# Matlab & Julia Matrix Operations Benchmark
+# MATLAB & Julia Matrix Operations Benchmark
 
 This is a small benchmark of some common Matrix Operations (Linear Algebra Oriented).  
 The purpose of this Benchmark is to display Run Time of various commonly used operations by Signal / Image / Data Processing Algorithm Engineers. 
@@ -57,7 +57,7 @@ The operation is done on 2 different matrices on along different dimensions.
 The result is summed with broadcasting to generate a new matrix.
 
  * MATLAB Code - `mA = (vX.' * mA * vX) + (vB.' * vX) + sacalrC;`.
- * Julia Code - `mA = sum(mX, 1) .+ minimum(mY, 2)` (Using the dot for [Loop Fusion][50]).
+ * Julia Code - `mA = sum(mX, dims = 1) .+ minimum(mY, dims = 2);` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0001.
 
@@ -78,7 +78,7 @@ Belongs to set 0001.
 Calculation of Matrix Exponent.
 
  * MATLAB Code - `mA = expm(mX);`.
- * Julia Code - `mA = expm(mX);`.
+ * Julia Code - `mA = exp(mX);`.
 
 Belongs to set 0002.
 
@@ -89,7 +89,7 @@ Belongs to set 0002.
 Calculation of Matrix Square Root.
 
  * MATLAB Code - `mA = sqrtm(mX);`.
- * Julia Code - `mA = sqrtm(mX);`.
+ * Julia Code - `mA = sqrt(mX);`.
 
 Belongs to set 0002.
 
@@ -99,8 +99,8 @@ Belongs to set 0002.
 
 Calculation of all 3 SVD Matrices.
 
- * MATLAB Code - `[mU, mS, mV] = svd(mX)`.
- * Julia Code - `mU, mS, mV = svd(mX, thin = false)`.
+ * MATLAB Code - `[mU, mS, mV] = svd(mX);`.
+ * Julia Code - `mU, vS, mV = svd(mX, full = true); mS = diagm(vS);`.
 
 Belongs to set 0002.
 
@@ -110,8 +110,8 @@ Belongs to set 0002.
 
 Calculation of 2 Eigen Decomposition Matrices.
 
- * MATLAB Code - `[mD, mV] = eig(mX)`.
- * Julia Code - `mD, mV = eig(mX)`.
+ * MATLAB Code - `[mD, mV] = eig(mX);`.
+ * Julia Code - `vD, mV = eigen(mX); mD = diagm(vD);`.
 
 Belongs to set 0002.
 
@@ -121,8 +121,8 @@ Belongs to set 0002.
 
 Calculation of Cholseky Decomposition.
 
- * MATLAB Code - `mA = chol(mX)`.
- * Julia Code - `mA = chol(mX)`.
+ * MATLAB Code - `mA = chol(mX);`.
+ * Julia Code - `mA = cholesky(mY);`.
 
 Belongs to set 0002.
 
@@ -132,8 +132,8 @@ Belongs to set 0002.
 
 Calculation of the Inverse and Pseudo Inverse of a matrix.
 
- * MATLAB Code - `mA = inv(mX)` and `mB = pinv(mY)`.
- * Julia Code - `mA = inv(mX)` and `mB = pinv(mY)`.
+ * MATLAB Code - `mA = inv(mX);` and `mB = pinv(mY);`.
+ * Julia Code - `mA = inv(mX);` and `mB = pinv(mY);`.
 
 Belongs to set 0002.
 
@@ -143,8 +143,8 @@ Belongs to set 0002.
 
 Solving a Vector Linear System and a Matrix Linear System.
 
- * MATLAB Code - `vX = mA \ vB` and `mX = mA \ mB`.
- * Julia Code - `vX = mA \ vB` and `mX = mA \ mB`.
+ * MATLAB Code - `vX = mA \ vB;` and `mX = mA \ mB;`.
+ * Julia Code - `vX = mA \ vB;` and `mX = mA \ mB;`.
 
 Belongs to set 0003.
 
@@ -155,8 +155,8 @@ Belongs to set 0003.
 Solving a Vector Least Squares and a Matrix Least Squares.  
 This is combines Matrix Transpose, Matrix Multiplication (Done at onces), Matrix Inversion (Positive Definite) and Matrix Vector / Matrix Multiplication.
 
- * MATLAB Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
- * Julia Code - `vX = (mA.' * mA) \ (mA.' * vB)` and `mX = (mA.' * mA) \ (mA.' * mB)`.
+ * MATLAB Code - `vX = (mA.' * mA) \ (mA.' * vB);` and `mX = (mA.' * mA) \ (mA.' * mB);`.
+ * Julia Code - `vX = (mA.' * mA) \ (mA.' * vB);` and `mX = (mA.' * mA) \ (mA.' * mB);`.
 
 Belongs to set 0003.
 
@@ -169,8 +169,8 @@ Namely, each element in the matrix is the squared distance between 2 vectors.
 This is calculation is needed for instance in the K-Means algorithm.
 It is composed of Matrix Reduction operation, Matrix Multiplication and Broadcasting. 
 
- * MATLAB Code - `mA = sum(mX .^ 2, 1).' - (2 .* mX.' * mY) + sum(mY .^ 2, 1)`.
- * Julia Code - `mA = sum(mX .^ 2, 1).' .- (2 .* mX.' * mY) .+ sum(mY .^ 2, 1)` (Using the dot for [Loop Fusion][50]).
+ * MATLAB Code - `mA = sum(mX .^ 2, 1).' - (2 .* mX.' * mY) + sum(mY .^ 2, 1);`.
+ * Julia Code - `mA = sum(mX .^ 2, dims = 1)' .- (2 .* mX' * mY) .+ sum(mY .^ 2, dims = 1);` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0003.
 
@@ -192,16 +192,18 @@ Belongs to set 0003.
  * CPU - Intel Core I7 6800K @ 3.4 [GHz].
  * Memory - 4 * 8 [GB] @ 2166 [MHz] - G.Skill F4 2800C-16-8GRK.
  * Mother Board - ASRock X99 Killer (BIOS Version P3.20).
- * MATLAB R2016b.
-    * BLAS Version (`version -blas`) - `Intel(R) Math Kernel Library Version 11.3.1 Product Build 20151021 for Intel(R) 64 architecture applications, CNR branch AVX2`.
-    * LAPACK Version (`cersion -lapack`) - `Intel(R) Math Kernel Library Version 11.3.1 Product Build 20151021 for Intel(R) 64 architecture applications, CNR branch AVX2; Linear Algebra PACKage Version 3.5.0`.
- * Julia Pro 0.5.0.4.
-     * Julia Version (`versioninfo()`) - `Julia Version 0.5.0; Commit 3c9d753 (2016-09-19 18:14 UTC)`;
-     * BLAS Version - `BLAS: libopenblas (USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell)`.
+ * MATLAB R2019b.
+    * BLAS Version (`version -blas`) - `Intel(R) Math Kernel Library Version 2018.0.3 Product Build 20180406 for Intel(R) 64 architecture applications, CNR branch AVX2`.
+    * LAPACK Version (`version -lapack`) - `Intel(R) Math Kernel Library Version 2018.0.3 Product Build 20180406 for Intel(R) 64 architecture applications, CNR branch AVX2
+     Linear Algebra PACKage Version 3.7.0`.
+ * Julia Pro 1.2.0.1.
+     * Julia Version (`versioninfo()`) - `Julia Version 1.2.0; Commit c6da87ff4b (2019-08-20 00:03 UTC)`;
+     * OpenBLAS Version - `OpenBLAS 0.3.5  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=16`.
+	 * MKL Version - `MKL.v2019.0.117.x86_64-w64-mingw32.tar.gz` from ([`builMKL.jl](https://github.com/JuliaComputing/MKL.jl/blob/e8780f9c3826cce167cf03ebbdcc72f328bf2e1d/deps/build_MKL.jl) on [MKL.jl](https://github.com/JuliaComputing/MKL.jl) at the time of the test).
      * LAPACK Version - `libopenblas64_`.
      * LIBM Version - `libopenlibm`.
-     * LLVM Version - `libLLVM-3.7.1 (ORCJIT, broadwell)`.
- * Windows 10 Professional 64 Bit.
+     * LLVM Version - `libLLVM-6.0.1 (ORCJIT, broadwell)`.
+ * Windows 10 Professional 64 Bit (Build `10.0.18362`).
 
 At the time of the test no other application is running (Anti Virus is disabled).
 
@@ -238,9 +240,9 @@ mRunTime = JuliaMatrixBenchmark();
  * Add Python (NumPy).
  * Add Octave.
  * Add more tests (Some real world algorithms)
-     * Orthogonal Matching Pursuit.
-     * Reweighted Iterative Least Squares.
- * Devectorize Element Wise Operations (Loop Fusion isn't working yet). See <https://discourse.julialang.org/t/benchmark-matlab-julia-for-matrix-operations/2000/7>.
+     * 	Orthogonal Matching Pursuit.
+     * 	Reweighted Iterative Least Squares.
+	 *	Prox based L1 Regularized Least Squares.
 
  
   [01]: https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark/raw/master/Figures/Figure0001.png

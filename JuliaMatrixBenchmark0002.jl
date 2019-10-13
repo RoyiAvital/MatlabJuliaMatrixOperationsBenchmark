@@ -7,6 +7,10 @@
 # TODO:
 #   1.  A
 #   Release Notes:
+#   -   2.0.000     13/10/2019  Royi Avital
+#       *   Update for compatibility for Julia 1.2.
+#   -   1.0.004     12/02/2017  Royi Avital
+#       *   Ability to run only some of the tests.
 #   -   1.0.002     10/02/2017  Royi Avital
 #       *   Added generation of 'mX' once outside the functions.
 #   -   1.0.001     09/02/2017  Royi Avital
@@ -19,30 +23,22 @@
 #       *   First release version.
 # ----------------------------------------------------------------------------------------------- #
 
-function JuliaMatrixBenchmark0002( operationMode = 2 )
+function JuliaMatrixBenchmark0002( vTestIdx = [1, 2, 3, 4, 5, 6], vMatrixSize = [2, 5, 10, 20, 50, 100, 200, 300, 500, 750, 1000, 2000, 3000, 4000], numIterations = 7 )
 
-  OPERATION_MODE_PARTIAL  = 1; # For Testing (Runs Fast)
-  OPERATION_MODE_FULL     = 2;
-
-  cRunTimeFunctions = [MatrixExpRunTime, MatrixSqrtRunTime, SvdRunTime, EigRunTime,
+  cRunTimeFunctionsBase = [MatrixExpRunTime, MatrixSqrtRunTime, SvdRunTime, EigRunTime,
                       CholDecRunTime, MatInvRunTime];
 
-  cFunctionString = ["Matrix Exponential", "Matrix Square Root", "SVD", "Eigen Decomposition",
+  cFunctionStringBase = ["Matrix Exponential", "Matrix Square Root", "SVD", "Eigen Decomposition",
                   "Cholesky Decomposition", "Matrix Inversion"]
 
-  if(operationMode == OPERATION_MODE_PARTIAL)
-    vMatrixSize = round(Int64, squeeze(readcsv("vMatrixSizePartial.csv"), 1));
-    numIterations = round(Int64, squeeze(readcsv("numIterationsPartial.csv"), 1));
-  elseif(operationMode == OPERATION_MODE_FULL)
-    vMatrixSize = round(Int64, squeeze(readcsv("vMatrixSizeFull.csv"), 1));
-    numIterations = round(Int64, squeeze(readcsv("numIterationsFull.csv"), 1));
-  end
+  numTests = length(cRunTimeFunctionsBase);
 
-  numIterations = numIterations[1]; # It is 1x1 Array -> Scalar
+  cRunTimeFunctions = cRunTimeFunctionsBase[vTestIdx];
+  cFunctionString   = cFunctionStringBase[vTestIdx];
 
   mRunTime = zeros(length(vMatrixSize), length(cRunTimeFunctions), numIterations);
 
-  tic();
+  startTime = time();
   for ii = 1:length(vMatrixSize)
     matrixSize = vMatrixSize[ii];
     mX = randn(matrixSize, matrixSize);
@@ -55,14 +51,13 @@ function JuliaMatrixBenchmark0002( operationMode = 2 )
       println("Finished Processing $(cFunctionString[jj])");
     end
   end
-  totalRunTime = toq();
+  endTime = time();
+  totalRunTime = endTime - startTime;
 
-  mRunTime = median(mRunTime, 3);
-  mRunTime = squeeze(mRunTime, 3);
+  mRunTime = median(mRunTime, dims = 3);
+  mRunTime = dropdims(mRunTime, dims = 3);
 
   println("Finished the Benchmark in $totalRunTime [Sec]");
-
-  writecsv("RunTimeJulia0002.csv", mRunTime);
 
   return mRunTime;
 
@@ -70,29 +65,30 @@ end
 
 function MatrixExpRunTime( matrixSize, mX )
 
-  tic();
-  mA = expm(mX);
-  runTime = toq();
+  runTime = @elapsed begin
+  mA = exp(mX);
+  end
 
   return mA, runTime;
 end
 
 function MatrixSqrtRunTime( matrixSize, mX )
 
-  mY = mX.' * mX;
+  mY = mX' * mX;
 
-  tic();
-  mA = sqrtm(mY);
-  runTime = toq();
+  runTime = @elapsed begin
+  mA = sqrt(mY);
+  end
 
   return mA, runTime;
 end
 
 function SvdRunTime( matrixSize, mX )
 
-  tic();
-  mU, mS, mV = svd(mX, thin = false);
-  runTime = toq();
+  runTime = @elapsed begin
+  mU, vS, mV = svd(mX, full = true);
+  mS = diagm(vS);
+  end
 
   mA = mU .+ mS .+ mV;
 
@@ -101,9 +97,10 @@ end
 
 function EigRunTime( matrixSize, mX )
 
-  tic();
-  mD, mV = eig(mX);
-  runTime = toq();
+  runTime = @elapsed begin
+  vD, mV = eigen(mX);
+  mD = diagm(vD); # MATLAB allocates Matrix
+  end
 
   mA = mD .+ mV;
 
@@ -112,23 +109,23 @@ end
 
 function CholDecRunTime( matrixSize, mX )
 
-  mY = mX.' * mX;
+  mY = mX' * mX;
 
-  tic();
-  mA = chol(mY);
-  runTime = toq();
+  runTime = @elapsed begin
+  mA = cholesky(mY);
+  end
 
   return mA, runTime;
 end
 
 function MatInvRunTime( matrixSize, mX )
 
-    mY = mX.' * mX;
+    mY = mX' * mX;
 
-    tic();
+    runTime = @elapsed begin
     mA = inv(mY);
     mB = pinv(mX);
-    runTime = toq();
+    end
 
     mA = mA .+ mB;
 

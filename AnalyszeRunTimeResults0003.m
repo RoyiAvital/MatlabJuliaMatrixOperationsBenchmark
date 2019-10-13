@@ -25,9 +25,9 @@ JULIA_IDX   = 2;
 
 MATLAB_RUN_TIME_FILE_NAME       = 'RunTimeMatlab0003.csv';
 JULIA_RUN_TIME_FILE_NAME        = 'RunTimeJulia0003.csv';
-JULIA_OPT_RUN_TIME_FILE_NAME    = 'RunTimeJuliaOpt0003.csv';
+JULIA_MKL_RUN_TIME_FILE_NAME    = 'RunTimeJulia0003MKL.csv';
 
-cLegendString = {['MATLAB'], ['Julia'], ['Julia Optimized']};
+cLegendString = {['MATLAB'], ['Julia'], ['Julia MKL.jl']};
 
 figureIdx           = 12;
 figureCounterSpec   = '%04d';
@@ -45,7 +45,7 @@ generateImages = ON;
 
 mRunTimeMatlab      = csvread([RUN_TIME_DATA_FOLDER, MATLAB_RUN_TIME_FILE_NAME]);
 mRunTimeJulia       = csvread([RUN_TIME_DATA_FOLDER, JULIA_RUN_TIME_FILE_NAME]);
-mRunTimeJuliaOpt    = csvread([RUN_TIME_DATA_FOLDER, JULIA_OPT_RUN_TIME_FILE_NAME]);
+mRunTimeJuliaMkl    = csvread([RUN_TIME_DATA_FOLDER, JULIA_MKL_RUN_TIME_FILE_NAME]);
 
 numTests    = length(cFunctionString);
 numMatSize  = length(vMatrixSize);
@@ -54,7 +54,7 @@ if(any(size(mRunTimeMatlab) ~= size(mRunTimeJulia)))
     error(['Run Time Data Dimensions Don''t Match']);
 end
 
-if(any(size(mRunTimeMatlab) ~= size(mRunTimeJuliaOpt)))
+if(any(size(mRunTimeMatlab) ~= size(mRunTimeJuliaMkl)))
     error(['Run Time Data Dimensions Don''t Match']);
 end
 
@@ -75,7 +75,7 @@ for ii = 1:numTests
     hFigure     = figure('Position', figPosMedium);
     hAxes       = axes();
     set(hAxes, 'NextPlot', 'add');
-    hLineSeries = plot(vMatrixSize, [mRunTimeMatlab(:, ii), mRunTimeJulia(:, ii), mRunTimeJuliaOpt(:, ii)]);
+    hLineSeries = plot(vMatrixSize, [mRunTimeMatlab(:, ii), mRunTimeJulia(:, ii), mRunTimeJuliaMkl(:, ii)]);
     set(hLineSeries, 'LineWidth', lineWidthNormal);
     set(get(hAxes, 'Title'), 'String', ['Test - ', cFunctionString{ii}], ...
         'FontSize', fontSizeTitle);

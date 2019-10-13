@@ -30,9 +30,11 @@ if(exist('operationMode', 'var') == FALSE)
     operationMode = OPERATION_MODE_FULL;
 end
 
-mRunTime = MatlabMatrixBenchmark0001(operationMode);
-mRunTime = MatlabMatrixBenchmark0002(operationMode);
-mRunTime = MatlabMatrixBenchmark0003(operationMode);
+vTestIdx = [1:6];
+mRunTime = MatlabMatrixBenchmark0001(operationMode, vTestIdx);
+mRunTime = MatlabMatrixBenchmark0002(operationMode, vTestIdx);
+vTestIdx = [1:4];
+mRunTime = MatlabMatrixBenchmark0003(operationMode, vTestIdx);
 
 
 end

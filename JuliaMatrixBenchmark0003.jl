@@ -7,6 +7,10 @@
 # TODO:
 #   1.  A
 #   Release Notes:
+#   -   2.0.000     13/10/2019  Royi Avital
+#       *   Update for compatibility for Julia 1.2.
+#   -   1.0.004     12/02/2017  Royi Avital
+#       *   Ability to run only some of the tests.
 #   -   1.0.002     10/02/2017  Royi Avital
 #       *   Added generation of 'mX' once outside the functions.
 #       *   Optimized creation of scalars and vectors.
@@ -20,28 +24,24 @@
 #       *   First release version.
 # ----------------------------------------------------------------------------------------------- #
 
-function JuliaMatrixBenchmark0003( operationMode = 2 )
+function JuliaMatrixBenchmark0003( vTestIdx = [1, 2, 3, 4, 5, 6], vMatrixSize = [2, 5, 10, 20, 50, 100, 200, 300, 500, 750, 1000, 2000, 3000, 4000], numIterations = 7 )
 
-  OPERATION_MODE_PARTIAL  = 1; # For Testing (Runs Fast)
-  OPERATION_MODE_FULL     = 2;
+  cRunTimeFunctionsBase = [LinearSystemRunTime, LeastSquaresRunTime, CalcDistanceMatrixRunTime, KMeansRunTime];
 
-  cRunTimeFunctions = [LinearSystemRunTime, LeastSquaresRunTime, CalcDistanceMatrixRunTime, KMeansRunTime];
+  cFunctionStringBase = ["Linear System Solution", "Linear Least Squares", "Squared Distance Matrix", "K-Means"]
 
-  cFunctionString = ["Linear System Solution", "Linear Least Squares", "Squared Distance Matrix", "K-Means"]
+  numTests = length(cRunTimeFunctionsBase);
 
-  if(operationMode == OPERATION_MODE_PARTIAL)
-    vMatrixSize = round(Int64, squeeze(readcsv("vMatrixSizePartial.csv"), 1));
-    numIterations = round(Int64, squeeze(readcsv("numIterationsPartial.csv"), 1));
-  elseif(operationMode == OPERATION_MODE_FULL)
-    vMatrixSize = round(Int64, squeeze(readcsv("vMatrixSizeFull.csv"), 1));
-    numIterations = round(Int64, squeeze(readcsv("numIterationsFull.csv"), 1));
-  end
+  vTestIdx = vTestIdx[1:numTests];
+
+  cRunTimeFunctions = cRunTimeFunctionsBase[vTestIdx];
+  cFunctionString   = cFunctionStringBase[vTestIdx];
 
   numIterations = numIterations[1]; # It is 1x1 Array -> Scalar
 
   mRunTime = zeros(length(vMatrixSize), length(cRunTimeFunctions), numIterations);
 
-  tic();
+  startTime = time();
   for ii = 1:length(vMatrixSize)
     matrixSize = vMatrixSize[ii];
     mX = randn(matrixSize, matrixSize);
@@ -54,14 +54,13 @@ function JuliaMatrixBenchmark0003( operationMode = 2 )
       println("Finished Processing $(cFunctionString[jj])");
     end
   end
-  totalRunTime = toq();
+  endTime = time();
+  totalRunTime = endTime - startTime;
 
-  mRunTime = median(mRunTime, 3);
-  mRunTime = squeeze(mRunTime, 3);
+  mRunTime = median(mRunTime, dims = 3);
+  mRunTime = dropdims(mRunTime, dims = 3);
 
   println("Finished the Benchmark in $totalRunTime [Sec]");
-
-  writecsv("RunTimeJulia0003.csv", mRunTime);
 
   return mRunTime;
 
@@ -72,10 +71,10 @@ function LinearSystemRunTime( matrixSize, mX )
   mB = randn(matrixSize, matrixSize);
   vB = randn(matrixSize);
 
-  tic();
+  runTime = @elapsed begin
   vA = mX \ vB;
   mA = mX \ mB;
-  runTime = toq();
+  end
 
   mA = mA .+ vA;
 
@@ -87,10 +86,10 @@ function LeastSquaresRunTime( matrixSize, mX )
   mB = randn(matrixSize, matrixSize);
   vB = randn(matrixSize);
 
-  tic();
-  vA = (mX.' * mX) \ (mX.' * vB);
-  mA = (mX.' * mX) \ (mX.' * mB);
-  runTime = toq();
+  runTime = @elapsed begin
+  vA = (mX' * mX) \ (mX' * vB);
+  mA = (mX' * mX) \ (mX' * mB);
+  end
 
   mA = mA .+ vA;
 
@@ -101,9 +100,9 @@ function CalcDistanceMatrixRunTime( matrixSize, mX )
 
   mY = randn(matrixSize, matrixSize);
 
-  tic();
-  mA = sum(mX .^ 2, 1).' .- (2 .* mX.' * mY) .+ sum(mY .^ 2, 1);
-  runTime = toq();
+  runTime = @elapsed begin
+  mA = sum(mX .^ 2, dims = 1)' .- (2 .* mX' * mY) .+ sum(mY .^ 2, dims = 1);
+  end
 
   return mA, runTime;
 end
@@ -113,22 +112,22 @@ function KMeansRunTime( matrixSize, mX )
   # Assuming Samples are slong Columns (Rows are features)
   numClusters     = Int64(max(round(matrixSize / 100), 1));
   vClusterId      = zeros(matrixSize);
-  numIterations   = 100;
+  numIterations   = 10;
 
-  tic();
+  runTime = @elapsed begin
   # http://stackoverflow.com/questions/36047516/julia-generating-unique-random-integer-array
   mA          = mX[:, randperm(matrixSize)[1:numClusters]]; #<! Cluster Centroids
 
   for ii = 1:numIterations
-    vMinDist, vClusterId[:] = findmin(sum(mA .^ 2, 1).' .- (2 .* mA.' * mX), 1); #<! Is there a `~` equivalent in Julia?
+    vClusterId[:] = map(ii -> ii[2], argmin(sum(mA .^ 2, dims = 1)' .- (2 .* mA' * mX), dims = 1)); #<! Is there a `~` equivalent in Julia?
     for jj = 1:numClusters
-      mA[:, jj] = sum(mX[:, vClusterId .== jj], 2) ./ matrixSize;
+      mA[:, jj] = sum(mX[:, vClusterId .== jj], dims = 2) ./ sum(vClusterId .== jj);
     end
   end
 
-  runTime = toq();
+  end
 
-  mA = mA[:, 1] .+ mA[:, end].';
+  mA = mA[:, 1] .+ mA[:, end]';
 
-  return mA;
+  return mA, runTime;
 end
