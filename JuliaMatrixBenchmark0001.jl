@@ -7,6 +7,8 @@
 # TODO:
 #   1.  A
 #   Release Notes:
+#   -   2.0.001     14/10/2019  Royi Avital
+#       *   Fixed missing `.` before `-` in `mE = exp.(-(mA .^ 2));`.
 #   -   2.0.000     13/10/2019  Royi Avital
 #       *   Update for compatibility for Julia 1.2.
 #   -   1.0.004     12/02/2017  Royi Avital
@@ -132,7 +134,7 @@ function ElementWiseOperationsRunTime( matrixSize, mX, mY )
 
   runTime = @elapsed begin
   mD = abs.(mA) .+ sin.(mB);
-  mE = exp.(-(mA .^ 2));
+  mE = exp.(.-(mA .^ 2));
   mF = (-mB .+ sqrt.((mB .^ 2) .- (4 .* mA .* mC))) ./ (2 .* mA);
   end
 
