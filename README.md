@@ -43,8 +43,8 @@ Belongs to set 0001.
 ### Matrix Quadratic Form
 
 Calculation of Matrix / Vector Quadratic Form.  
- * MATLAB Code - `mA = ((mX * vX).' * (mX * vX)) + (vB.' * vX) + sacalrC;`.
- * Julia Code - `mA = ((mX * vX)' * (mX * vX)) .+ (vB' * vX) .+ sacalrC;;` (Using the dot for [Loop Fusion][50]).
+ * MATLAB Code - `mA = ((mX * vX).' * (mX * vX)) + (vB.' * vX) + scalarC;`.
+ * Julia Code - `mA = ((mX * vX)' * (mX * vX)) .+ (vB' * vX) .+ scalarC;` (Using the dot for [Loop Fusion][50]).
 
 Belongs to set 0001.
 
