@@ -190,22 +190,25 @@ Belongs to set 0003.
 
 ## System Configuration
  * CPU - Intel Core I7 6800K @ 3.4 [GHz].
- * Memory - 4 * 8 [GB] @ 2166 [MHz] - G.Skill F4 2800C-16-8GRK.
+ * Memory - 4 * 8 [GB] @ 1400 [MHz] - G.Skill F4 2800C-16-8GRK.
  * Mother Board - ASRock X99 Killer (BIOS Version P3.20).
- * MATLAB R2019b.
+ * MATLAB R2019b:
     * BLAS Version (`version -blas`) - `Intel(R) Math Kernel Library Version 2018.0.3 Product Build 20180406 for Intel(R) 64 architecture applications, CNR branch AVX2`.
     * LAPACK Version (`version -lapack`) - `Intel(R) Math Kernel Library Version 2018.0.3 Product Build 20180406 for Intel(R) 64 architecture applications, CNR branch AVX2
-     Linear Algebra PACKage Version 3.7.0`.
- * Julia Pro 1.2.0.1.
+     Linear Algebra PACKage Version 3.7.0`.  
+ * Julia Pro 1.2.0.1:
      * Julia Version (`versioninfo()`) - `Julia Version 1.2.0; Commit c6da87ff4b (2019-08-20 00:03 UTC)`;
      * OpenBLAS Version - `OpenBLAS 0.3.5  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=16`.
-	 * MKL Version - `MKL.v2019.0.117.x86_64-w64-mingw32.tar.gz` from ([`builMKL.jl](https://github.com/JuliaComputing/MKL.jl/blob/e8780f9c3826cce167cf03ebbdcc72f328bf2e1d/deps/build_MKL.jl) on [MKL.jl](https://github.com/JuliaComputing/MKL.jl) at the time of the test).
+	 * MKL Version - `MKL.v2019.0.117.x86_64-w64-mingw32.tar.gz` from ([`buildMKL.jl](https://github.com/JuliaComputing/MKL.jl/blob/e8780f9c3826cce167cf03ebbdcc72f328bf2e1d/deps/build_MKL.jl) on [MKL.jl](https://github.com/JuliaComputing/MKL.jl) at the time of the test).
      * LAPACK Version - `libopenblas64_`.
      * LIBM Version - `libopenlibm`.
      * LLVM Version - `libLLVM-6.0.1 (ORCJIT, broadwell)`.
  * Windows 10 Professional 64 Bit (Build `10.0.18362`).
 
-At the time of the test no other application is running (Anti Virus is disabled).
+At the time of the test no other application is running (Anti Virus is disabled).  
+**Remark**: Pay attention that MATLAB uses the CNR branch of MKL. This branch is for ensuring reproducibility.  
+This means that MKL can deliver even better performance for those who can prioritize speed over reproducibility.
+
 
 ## How to Run
 ### Run the Benchmark - Julia
