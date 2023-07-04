@@ -1,5 +1,5 @@
-[![Visitors](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRoyiAvital%2FStackExchangeCodes&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visitors+%28Daily+%2F+Total%29&edge_flat=false)](https://github.com/RoyiAvital/MatlabJuliaMatrixOperationsBenchmark)
 <a href="https://liberapay.com/Royi/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+[![Visitors](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRoyiAvital%2FStackExchangeCodes&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visitors+%28Daily+%2F+Total%29&edge_flat=false)](https://github.com/RoyiAvital/StackExchangeCodes)
 
 # MATLAB & Julia Matrix Operations Benchmark
 
@@ -156,7 +156,7 @@ Belongs to set 0003.
 ### Linear Least Squares
 
 Solving a Vector Least Squares and a Matrix Least Squares.  
-This is combines Matrix Transpose, Matrix Multiplication (Done at onces), Matrix Inversion (Positive Definite) and Matrix Vector / Matrix Multiplication.
+This is combines Matrix Transpose, Matrix Multiplication (Done at once), Matrix Inversion (Positive Definite) and Matrix Vector / Matrix Multiplication.
 
  * MATLAB Code - `vX = (mA.' * mA) \ (mA.' * vB);` and `mX = (mA.' * mA) \ (mA.' * mB);`.
  * Julia Code - `vX = (mA.' * mA) \ (mA.' * vB);` and `mX = (mA.' * mA) \ (mA.' * mB);`.
